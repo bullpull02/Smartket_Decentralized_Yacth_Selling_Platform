@@ -1,15 +1,18 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { apiLogin, apiCreateUser, apiUpdateUser, apiDeleteUser } from 'utils/user'
+import { apiCreateYacht } from 'utils/yacht'
 
 interface IUser {
   user: any
   isLoggedIn: boolean
+  yachts: any[]
 }
 
 const initialState: IUser = {
   user: {},
   isLoggedIn: false,
+  yachts: [],
 }
 
 export const login = createAsyncThunk('user/login', async () => {
@@ -51,6 +54,15 @@ export const deleteUser = createAsyncThunk('user/delete', async (id: number) => 
   }
 })
 
+export const createYacht = createAsyncThunk('user/createYacht', async (params: any) => {
+  try {
+    const data = await apiCreateYacht(params)
+    return data
+  } catch (err) {
+    throw err
+  }
+})
+
 const userSlice = createSlice({
   name: 'user',
   initialState,
@@ -76,6 +88,7 @@ const userSlice = createSlice({
     builder.addCase(updateUser.rejected, (state, action) => {})
     builder.addCase(deleteUser.fulfilled, (state, action) => {})
     builder.addCase(deleteUser.rejected, (state, action) => {})
+    builder.addCase(createYacht.fulfilled, (state, action) => {})
   },
 })
 

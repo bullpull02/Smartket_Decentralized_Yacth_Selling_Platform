@@ -10,7 +10,17 @@ export default class YachtController {
 
 	create = async (req: Request, res: Response) => {
 		try {
-			await Yacht.create(req.body)
+			const validator = validationResult(req)
+
+			if (!validator.isEmpty()) {
+				return errorHandler(402, validator.array()[0].msg, res)
+			}
+
+			const { userId } = req.body
+
+			await Yacht.create({ ...req.body, owner: userId })
+
+			return res.json({ status: 201, success: true })
 		} catch (err) {
 			errorHandler(500, err.message, res)
 		}

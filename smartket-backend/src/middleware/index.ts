@@ -1,8 +1,9 @@
 import type { Request, Response, NextFunction } from 'express'
 import { ethers } from 'ethers'
+import User from '../models/user.model'
 import { errorHandler } from '../utils'
 
-export const signMiddleware = (req: Request, res: Response, next: NextFunction) => {
+export const signMiddleware = async (req: Request, res: Response, next: NextFunction) => {
 	try {
 		const signature = req.headers['x-signature'] as string
 		const walletAddress = req.headers['x-wallet-address'] as string
@@ -18,6 +19,10 @@ export const signMiddleware = (req: Request, res: Response, next: NextFunction) 
 		}
 
 		req.body.walletAddress = walletAddress
+
+		const userId = (await User.findByWalletAddress(walletAddress)).id
+
+		req.body.userId = userId
 
 		next()
 	} catch (err) {

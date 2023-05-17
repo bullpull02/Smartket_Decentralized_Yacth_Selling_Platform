@@ -1,17 +1,69 @@
+import { useId, useState } from 'react'
 import { Field, Form } from 'react-final-form'
+import { toast } from 'react-hot-toast'
 
 import MainLayout from 'layouts/MainLayout'
 import InputForm from 'components/Form/Input'
 
+import { myClassName } from 'components/Form/Input'
 import countries from 'constants/country'
-
-const classNames = {
-  h4: 'text-lg font-bold',
-}
+import { conditions, engineTypes } from 'constants/index'
+import { useAppDispatch } from 'app/hooks'
+import { setLoadingModalOpen } from 'slices/modal'
+import { createYacht } from 'slices/user'
+import { uploadToIPFS } from 'utils'
+import validate from 'utils/validator'
 
 const Create = () => {
-  const onSubmit = (values: any): void => {
-    console.log(values)
+  const mainImageId = useId()
+  const imagesId = useId()
+  const [mainImageFile, setMainImageFile] = useState<File | null>(null)
+  const [imageFiles, setImageFiles] = useState<FileList | null>(null)
+  const dispatch = useAppDispatch()
+
+  const onSubmit = async (values: any): Promise<void> => {
+    if (!mainImageFile) {
+      toast.error('Please upload main image')
+      return
+    }
+
+    dispatch(setLoadingModalOpen(true))
+
+    try {
+      const mainImage = await uploadToIPFS('file', mainImageFile)
+      const _images = []
+
+      if (imageFiles) {
+        for (let i = 0; i < imageFiles.length; i++) {
+          _images.push(await uploadToIPFS('file', imageFiles[i]))
+        }
+      }
+
+      const images = JSON.stringify(_images)
+
+      values.mainImage = mainImage
+      values.images = images
+
+      const { payload } = await dispatch(createYacht(values))
+
+      if (payload.success) {
+        toast.success('Successfully created yacht, please wait for admin to approve')
+      } else {
+        toast.error(payload.message)
+      }
+    } catch (err: any) {
+      toast.error(err.message)
+    }
+
+    dispatch(setLoadingModalOpen(false))
+  }
+
+  const handleUploadMainImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setMainImageFile(e.target.files && e.target.files[0])
+  }
+
+  const handleUploadImages = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setImageFiles(e.target.files)
   }
 
   return (
@@ -21,113 +73,89 @@ const Create = () => {
           onSubmit={onSubmit}
           render={({ handleSubmit }) => (
             <form onSubmit={handleSubmit} className='space-y-4'>
-              <h4 className={classNames.h4}>Overview</h4>
-              <Field name='name'>{(props) => <InputForm label='Vessel Name' {...props} />}</Field>
-              <Field name='manufacturer'>
-                {(props) => <InputForm label='Manufacturer' {...props} />}
-              </Field>
-              <Field type='number' name='year'>
-                {(props) => <InputForm label='Year' {...props} />}
-              </Field>
-              <Field type='number' name='length'>
-                {(props) => <InputForm label='Length(inch)' {...props} />}
-              </Field>
-              <Field name='location'>
-                {(props) => (
-                  <InputForm
-                    component='select'
-                    label='Location'
-                    options={countries.map((country) => ({
-                      label: country.name,
-                      value: country.name,
-                    }))}
-                    {...props}
+              <div className='grid grid-cols-2 gap-4'>
+                <Field name='name' validate={(value) => validate('name', value)}>
+                  {(props) => <InputForm label='Vessel Name' {...props} />}
+                </Field>
+                <Field name='manufacturer' validate={(value) => validate('manufacturer', value)}>
+                  {(props) => <InputForm label='Manufacturer' {...props} />}
+                </Field>
+                <Field name='engineType' validate={(value) => validate('engineType', value)}>
+                  {(props) => (
+                    <InputForm
+                      component='select'
+                      label='Engine Type'
+                      options={engineTypes.map((engineType: string) => ({
+                        label: engineType,
+                        value: engineType,
+                      }))}
+                      {...props}
+                    />
+                  )}
+                </Field>
+                <Field type='number' name='year'>
+                  {(props) => <InputForm label='Year' {...props} />}
+                </Field>
+                <Field type='number' name='length_inch'>
+                  {(props) => <InputForm label='Length(inch)' {...props} />}
+                </Field>
+                <Field name='price'>{(props) => <InputForm label='Price' {...props} />}</Field>
+                <Field name='condition' validate={(value) => validate('condition', value)}>
+                  {(props) => (
+                    <InputForm
+                      component='select'
+                      label='Condition'
+                      options={conditions.map((condition: string) => ({
+                        label: condition,
+                        value: condition,
+                      }))}
+                      {...props}
+                    />
+                  )}
+                </Field>
+                <Field name='location'>
+                  {(props) => (
+                    <InputForm
+                      component='select'
+                      label='Location'
+                      options={countries.map((country) => ({
+                        label: country.name,
+                        value: country.name,
+                      }))}
+                      {...props}
+                    />
+                  )}
+                </Field>
+                <div className=''>
+                  <label htmlFor={mainImageId} className='text-sm'>
+                    Main Image
+                  </label>
+                  <input
+                    type='file'
+                    accept='image/*'
+                    id={mainImageId}
+                    className={myClassName}
+                    onChange={handleUploadMainImage}
                   />
-                )}
-              </Field>
-              <Field name='mcaCertified'>
-                {(props) => <InputForm label='MCA Certified' {...props} />}
-              </Field>
+                </div>
+                <div className=''>
+                  <label htmlFor={imagesId} className='text-sm'>
+                    Preview Images
+                  </label>
+                  <input
+                    type='file'
+                    accept='image/*'
+                    multiple
+                    id={imagesId}
+                    className={myClassName}
+                    onChange={handleUploadImages}
+                  />
+                </div>
+              </div>
               <Field name='description'>
                 {(props) => (
                   <InputForm component='textarea' label='Description' rows={5} {...props} />
                 )}
-              </Field>
-              <h4 className={classNames.h4}>Design & Construction</h4>
-              <Field name='builder'>{(props) => <InputForm label='Builder' {...props} />}</Field>
-              <Field name='designer'>{(props) => <InputForm label='Designer' {...props} />}</Field>
-              <Field name='navalDesigner'>
-                {(props) => <InputForm label='Naval Designer' {...props} />}
-              </Field>
-              <Field name='exteriorDesigner'>
-                {(props) => <InputForm label='Exterior Designer' {...props} />}
-              </Field>
-              <Field name='interiorDesigner'>
-                {(props) => <InputForm label='InteriorDesigner' {...props} />}
-              </Field>
-              <Field name='stabilizers'>
-                {(props) => <InputForm label='Stabilizers' {...props} />}
-              </Field>
-              <Field name='bowThruster'>
-                {(props) => <InputForm label='Bow Thruster' {...props} />}
-              </Field>
-              <Field name='stemThruster'>
-                {(props) => <InputForm label='Stem Thruster' {...props} />}
-              </Field>
-              <Field name='elevator'>{(props) => <InputForm label='Elevator' {...props} />}</Field>
-              <Field type='number' name='elevatorDecks'>
-                {(props) => <InputForm label='Elevator Decks' {...props} />}
-              </Field>
-              <h4 className={classNames.h4}>Engine</h4>
-              <Field name='make'>{(props) => <InputForm label='Make' {...props} />}</Field>
-              <Field name='engineType'>
-                {(props) => <InputForm label='Engine Type' {...props} />}
-              </Field>
-              <Field name='driveType'>
-                {(props) => <InputForm label='Drive Type' {...props} />}
-              </Field>
-              <Field name='fuelType'>{(props) => <InputForm label='Fuel Type' {...props} />}</Field>
-              <Field name='engineLocation'>
-                {(props) => <InputForm label='Engine Location' {...props} />}
-              </Field>
-              <h4 className={classNames.h4}>Generator</h4>
-              <Field name='model'>{(props) => <InputForm label='Model' {...props} />}</Field>
-              <h4 className={classNames.h4}>Accommodations</h4>
-              <Field type='number' name='cabins'>
-                {(props) => <InputForm label='Cabins' {...props} />}
-              </Field>
-              <Field type='number' name='sleeps'>
-                {(props) => <InputForm label='Sleeps' {...props} />}
-              </Field>
-              <Field type='number' name='heads'>
-                {(props) => <InputForm label='Heads' {...props} />}
-              </Field>
-              <Field type='number' name='queenBerth'>
-                {(props) => <InputForm label='Queen Berth' {...props} />}
-              </Field>
-              <Field type='number' name='kingBerth'>
-                {(props) => <InputForm label='King Berth' {...props} />}
-              </Field>
-              <Field name='fullBeamMaster'>
-                {(props) => <InputForm label='Full Beam Master' {...props} />}
-              </Field>
-              <Field name='onDeckMaster'>
-                {(props) => <InputForm label='On Deck Master' {...props} />}
-              </Field>
-              <Field name='captainsCabin'>
-                {(props) => <InputForm label='Captains Cabin' {...props} />}
-              </Field>
-              <Field type='number' name='crewSleeps'>
-                {(props) => <InputForm label='Crew Sleeps' {...props} />}
-              </Field>
-              <Field type='number' name='crewHeads'>
-                {(props) => <InputForm label='Crew Heads' {...props} />}
-              </Field>
-              <Field type='number' name='crewMess'>
-                {(props) => <InputForm label='Crew Mess' {...props} />}
-              </Field>
-              <Field name='airConditioning'>
-                {(props) => <InputForm label='Air Conditioning' {...props} />}
               </Field>
               <button type='submit' className='rounded bg-blue-500 px-4 py-2 shadow'>
                 Submit

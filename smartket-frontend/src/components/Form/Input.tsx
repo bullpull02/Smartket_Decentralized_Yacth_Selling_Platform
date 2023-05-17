@@ -2,6 +2,9 @@ import { useId } from 'react'
 
 import { cx } from 'utils'
 
+export const myClassName =
+  'bg-transparent border border-gray-500 px-3 py-2 rounded outline-none w-full focus:border-gray-300 trans'
+
 interface InputFormProps extends React.InputHTMLAttributes<HTMLInputElement> {
   component?: 'input' | 'textarea' | 'select'
   className?: string
@@ -23,9 +26,6 @@ const InputForm: React.FC<InputFormProps> = ({
   ...props
 }) => {
   const id = useId()
-
-  const myClassName =
-    'bg-transparent border border-gray-500 px-3 py-2 rounded outline-none w-full focus:border-gray-300 trans'
 
   return (
     <div className={cx('w-full', className)}>
