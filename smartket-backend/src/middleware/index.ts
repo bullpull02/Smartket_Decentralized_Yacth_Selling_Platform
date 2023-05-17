@@ -20,7 +20,7 @@ export const signMiddleware = async (req: Request, res: Response, next: NextFunc
 
 		req.body.walletAddress = walletAddress
 
-		const userId = (await User.findByWalletAddress(walletAddress)).id
+		const userId = (await User.findByWalletAddress(walletAddress))?.id
 
 		req.body.userId = userId
 

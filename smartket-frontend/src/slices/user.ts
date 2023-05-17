@@ -80,6 +80,7 @@ const userSlice = createSlice({
       if (action.payload.success) {
         state.isLoggedIn = true
         state.user = { ...action.payload.data.user }
+        state.yachts = [...action.payload.data.user.yachts]
       }
     })
     builder.addCase(createUser.fulfilled, (state, action) => {})
@@ -88,7 +89,11 @@ const userSlice = createSlice({
     builder.addCase(updateUser.rejected, (state, action) => {})
     builder.addCase(deleteUser.fulfilled, (state, action) => {})
     builder.addCase(deleteUser.rejected, (state, action) => {})
-    builder.addCase(createYacht.fulfilled, (state, action) => {})
+    builder.addCase(createYacht.fulfilled, (state, action) => {
+      if (action.payload.success) {
+        state.yachts = [...action.payload.data.yachts]
+      }
+    })
   },
 })
 

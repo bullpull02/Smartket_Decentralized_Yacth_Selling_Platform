@@ -19,6 +19,8 @@ const Create = () => {
   const imagesId = useId()
   const [mainImageFile, setMainImageFile] = useState<File | null>(null)
   const [imageFiles, setImageFiles] = useState<FileList | null>(null)
+  const [prevMainImage, setPrevMainImage] = useState<string | null>(null)
+  const [prevImages, setPrevImages] = useState<string[] | null>(null)
   const dispatch = useAppDispatch()
 
   const onSubmit = async (values: any): Promise<void> => {
@@ -59,11 +61,24 @@ const Create = () => {
   }
 
   const handleUploadMainImage = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setMainImageFile(e.target.files && e.target.files[0])
+    if (!e.target.files) return
+
+    setMainImageFile(e.target.files[0])
+    setPrevMainImage(URL.createObjectURL(e.target.files[0]))
   }
 
   const handleUploadImages = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) return
+
     setImageFiles(e.target.files)
+
+    let temp: string[] = []
+
+    for (let i = 0; i < e.target.files.length; i++) {
+      temp.push(URL.createObjectURL(e.target.files[i]))
+    }
+
+    setPrevImages(temp)
   }
 
   return (
@@ -160,6 +175,11 @@ const Create = () => {
               <button type='submit' className='rounded bg-blue-500 px-4 py-2 shadow'>
                 Submit
               </button>
+              {prevMainImage && <img src={prevMainImage} alt='' className='h-80 rounded-md' />}
+              <div className='flex flex-wrap gap-4'>
+                {prevImages &&
+                  prevImages.map((image) => <img src={image} alt='' className='h-20' />)}
+              </div>
             </form>
           )}
         />

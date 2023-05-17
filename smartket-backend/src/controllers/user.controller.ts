@@ -1,7 +1,9 @@
 import type { Request, Response } from 'express'
 import { validationResult } from 'express-validator'
 import User from '../models/user.model'
+import Yacht from '../models/yacht.model'
 import { errorHandler } from '../utils'
+import { userInfo } from 'os'
 
 export default class UserController {
 	constructor() {}
@@ -9,7 +11,10 @@ export default class UserController {
 	login = async (req: Request, res: Response) => {
 		try {
 			const { walletAddress } = req.body
-			const user = await User.findOne({ where: { walletAddress } })
+			const user = await User.findOne({
+				where: { walletAddress },
+				include: [{ model: Yacht }],
+			})
 
 			if (!user) {
 				return errorHandler(404, 'User not found', res)

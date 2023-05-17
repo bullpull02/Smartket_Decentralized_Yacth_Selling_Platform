@@ -1,4 +1,5 @@
-import { Column, DataType, Model, Table } from 'sequelize-typescript'
+import { Column, DataType, HasMany, Model, Table } from 'sequelize-typescript'
+import Yacht from './yacht.model'
 
 export enum UserRoles {
 	ADMIN = 'admin',
@@ -10,6 +11,9 @@ export enum UserRoles {
 	timestamps: true,
 })
 class User extends Model<User> {
+	@HasMany(() => Yacht)
+	yachts: Yacht[]
+
 	@Column({
 		type: DataType.STRING,
 		allowNull: false,

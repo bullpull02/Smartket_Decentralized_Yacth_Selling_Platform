@@ -36,7 +36,7 @@ class Yacht extends Model<Yacht> {
 	@BelongsTo(() => User, {
 		onDelete: 'CASCADE',
 	})
-	User: User
+	user: User
 
 	@ForeignKey(() => User)
 	@Column

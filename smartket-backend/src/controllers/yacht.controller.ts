@@ -20,7 +20,9 @@ export default class YachtController {
 
 			await Yacht.create({ ...req.body, owner: userId })
 
-			return res.json({ status: 201, success: true })
+			const yachts = await Yacht.findAll({ where: { owner: userId } })
+
+			return res.json({ status: 201, success: true, data: { yachts } })
 		} catch (err) {
 			errorHandler(500, err.message, res)
 		}
