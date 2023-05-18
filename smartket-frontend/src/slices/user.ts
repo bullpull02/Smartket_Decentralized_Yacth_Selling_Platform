@@ -73,6 +73,8 @@ const userSlice = createSlice({
     logout: (state) => {
       state.isLoggedIn = false
       state.user = {}
+      localStorage.removeItem('signature')
+      localStorage.removeItem('walletAddress')
     },
   },
   extraReducers: (builder) => {

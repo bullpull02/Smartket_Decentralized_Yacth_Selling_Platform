@@ -12,6 +12,9 @@ class YachtRouter {
 	}
 
 	initializeRoutes() {
+		this.router.route('/approve/:id').put(signMiddleware, this.yachtController.accept)
+		this.router.route('/:id').get(signMiddleware, this.yachtController.findById)
+		this.router.route('/').get(signMiddleware, this.yachtController.findAll)
 		this.router
 			.route('/')
 			.post(signMiddleware, createValidator, this.yachtController.create)

@@ -175,10 +175,18 @@ const Create = () => {
               <button type='submit' className='rounded bg-blue-500 px-4 py-2 shadow'>
                 Submit
               </button>
-              {prevMainImage && <img src={prevMainImage} alt='' className='h-80 rounded-md' />}
+              {prevMainImage && (
+                <img
+                  src={prevMainImage}
+                  alt=''
+                  className='h-full w-full max-w-none rounded-md object-contain object-left-top'
+                />
+              )}
               <div className='flex flex-wrap gap-4'>
                 {prevImages &&
-                  prevImages.map((image) => <img src={image} alt='' className='h-20' />)}
+                  prevImages.map((image) => (
+                    <img src={image} alt='' className='h-24 rounded-md object-contain' />
+                  ))}
               </div>
             </form>
           )}

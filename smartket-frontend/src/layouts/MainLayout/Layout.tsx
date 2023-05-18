@@ -5,6 +5,8 @@ import { useAccount } from 'wagmi'
 import Header from './Header'
 import Footer from './Footer'
 
+import { useAppDispatch } from 'app/hooks'
+import { login, setLoggedIn } from 'slices/user'
 import { cx } from 'utils'
 
 interface LayoutProps {
@@ -15,11 +17,16 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ className = '', children = <></>, title = '' }) => {
   const { address, isConnected } = useAccount()
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
-    if (!isConnected || !address) return
+    if (!isConnected || !address) {
+      dispatch(setLoggedIn(false))
+      return
+    }
     localStorage.setItem('walletAddress', address)
-  }, [isConnected, address])
+    dispatch(login())
+  }, [isConnected, address, dispatch])
 
   return (
     <>

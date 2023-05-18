@@ -13,7 +13,7 @@ import { setLoadingModalOpen } from 'slices/modal'
 const headerMenu: Link[] = [
   { name: 'Home', path: '/', auth: undefined },
   { name: 'Marketplace', path: '/marketplace', auth: true },
-  { name: 'Create', path: '/create', auth: true },
+  { name: 'Create', path: '/create/yacht', auth: true },
   { name: 'Login', path: '', auth: false },
   { name: 'Register', path: '/register', auth: false },
 ]
@@ -63,7 +63,7 @@ const Header = () => {
   }
 
   return (
-    <header className='shadow backdrop-blur'>
+    <header className='relative z-[1000] shadow backdrop-blur'>
       <div className='container'>
         <div className='flex h-20 items-center justify-between'>
           <Link to='/'>

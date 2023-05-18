@@ -1,10 +1,14 @@
 interface YachtProps {
   yacht: Record<any, any>
+  onClick?: () => void
 }
 
-const Yacht: React.FC<YachtProps> = ({ yacht }) => {
+const Yacht: React.FC<YachtProps> = ({ yacht, onClick = () => null }) => {
   return (
-    <div className='group relative aspect-square cursor-pointer overflow-hidden rounded-md'>
+    <div
+      className='group relative aspect-square cursor-pointer overflow-hidden rounded-md'
+      onClick={onClick}
+    >
       <img
         src={`https://gateway.pinata.cloud/ipfs/${yacht.mainImage}`}
         alt=''

@@ -4,7 +4,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;500;600;700&display=swap');
 
 body {
-  @apply bg-background font-urbanist text-white;
+  @apply bg-gray-900 font-urbanist text-white;
 }
 
 .container {
