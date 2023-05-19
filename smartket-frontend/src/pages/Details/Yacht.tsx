@@ -6,7 +6,8 @@ import MainLayout from 'layouts/MainLayout'
 import Loading from 'components/Loading'
 import { ReactComponent as RemoveIcon } from 'icons/recycle-bin.svg'
 
-import { useAppDispatch } from 'app/hooks'
+import { useAppDispatch, useAppSelector } from 'app/hooks'
+import type { RootState } from 'app/store'
 import { setLoadingModalOpen } from 'slices/modal'
 import { cx } from 'utils'
 import { apiGetYacht, apiListYacht } from 'utils/yacht'
@@ -16,6 +17,7 @@ const classNames = {
   propertyDiv: 'flex items-end space-x-4',
   propertyTitle: 'w-24',
   propertyInfo: 'text-lg font-semibold',
+  button: 'rounded bg-blue-500 px-4 py-2 font-bold uppercase shadow',
 }
 
 const YachtDetail = () => {
@@ -24,6 +26,7 @@ const YachtDetail = () => {
   const [prevImage, setPrevImage] = useState<string>('')
   const { id } = useParams()
   const dispatch = useAppDispatch()
+  const user = useAppSelector((state: RootState) => state.user.user)
 
   useEffect(() => {
     if (!id) return
@@ -75,7 +78,11 @@ const YachtDetail = () => {
     dispatch(setLoadingModalOpen(false))
   }
 
-  const handleRemoveYacht = async (): Promise<void> => {}
+  const handleOfferYacht = async (id: number): Promise<void> => {}
+
+  const handleBuyYacht = async (id: number): Promise<void> => {}
+
+  const handleRemoveYacht = async (id: number): Promise<void> => {}
 
   return (
     <MainLayout title='SMARTKET - YACHT DETAIL'>
@@ -87,7 +94,7 @@ const YachtDetail = () => {
             <RemoveIcon
               className='absolute right-0 top-0 w-6 cursor-pointer transition hover:opacity-80'
               title='DELETE YACHT'
-              onClick={handleRemoveYacht}
+              onClick={() => handleRemoveYacht(yacht.id)}
             />
             <div className='relative col-span-2 grid gap-4'>
               <h4
@@ -172,17 +179,22 @@ const YachtDetail = () => {
               </div>
               <hr className='border-t border-gray-700' />
               <div>
-                {yacht.status === YachtStatus.PENDING ? (
+                {yacht.status === YachtStatus.PENDING && (
                   <p className='text-xl italic text-gray-500'>Waiting for admin to approve...</p>
+                )}
+                {yacht.status === YachtStatus.ACCEPTED && yacht.owner === user.id ? (
+                  <button className={classNames.button} onClick={() => handleListYacht(yacht.id)}>
+                    List my yacht
+                  </button>
                 ) : (
-                  yacht.status === YachtStatus.ACCEPTED && (
-                    <button
-                      className='rounded bg-blue-500 px-4 py-2 font-bold uppercase shadow'
-                      onClick={() => handleListYacht(yacht.id)}
-                    >
-                      List my yacht
-                    </button>
-                  )
+                  <button className={classNames.button} onClick={() => handleOfferYacht(yacht.id)}>
+                    Send offer
+                  </button>
+                )}
+                {yacht.status === YachtStatus.LISTED && yacht.owner !== user.id && (
+                  <button className={classNames.button} onClick={() => handleBuyYacht(yacht.id)}>
+                    Buy this yacht
+                  </button>
                 )}
               </div>
             </div>
