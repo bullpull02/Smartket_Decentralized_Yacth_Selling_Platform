@@ -11,3 +11,13 @@ export enum YachtStatus {
   SOLD = 'sold',
   PURCHASED = 'purchased',
 }
+
+export const StatusColor: Record<any, any> = {
+  pending: 'bg-red-500',
+  accepted: 'bg-green-500',
+  listed: 'bg-blue-500',
+  declined: 'red',
+  offered: 'green',
+  sold: 'green',
+  purchased: 'green',
+}

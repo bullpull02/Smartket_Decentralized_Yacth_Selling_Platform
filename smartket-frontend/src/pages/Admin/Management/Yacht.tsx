@@ -4,6 +4,8 @@ import { toast } from 'react-hot-toast'
 import MainLayout from 'layouts/MainLayout'
 import Loading from 'components/Loading'
 
+import { useAppDispatch } from 'app/hooks'
+import { setLoadingModalOpen } from 'slices/modal'
 import { apiApproveYacht, apiGetAllYachts } from 'utils/admin/yacht'
 import { cx, shortenAddress } from 'utils'
 import { YachtStatus } from 'constants/index'
@@ -16,6 +18,7 @@ const classNames = {
 const YachtManagement = () => {
   const [loading, setLoading] = useState<boolean>(true)
   const [yachts, setYachts] = useState<any[]>([])
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
     ;(async () => {
@@ -37,7 +40,12 @@ const YachtManagement = () => {
 
   const handleApprove = async (id: number): Promise<void> => {
     try {
+      if (!window.confirm('Are you sure you really want to approve this yacht?')) return
+
+      dispatch(setLoadingModalOpen(true))
+
       const data = await apiApproveYacht(id)
+
       if (data.success) {
         setYachts(data.data.yachts)
       } else {
@@ -46,6 +54,8 @@ const YachtManagement = () => {
     } catch (err: any) {
       toast.error(err.message)
     }
+
+    dispatch(setLoadingModalOpen(false))
   }
 
   return (
@@ -98,7 +108,7 @@ const YachtManagement = () => {
                     <td className={classNames.td}>{yacht.user.email}</td>
                     <td className={classNames.td}>{yacht.user.phone}</td>
                     <td className={classNames.td}>{yacht.user.country}</td>
-                    <td className={cx('sticky right-0', classNames.td)}>
+                    <td className={cx('sticky right-0 bg-gray-900', classNames.td)}>
                       <div className='w-[100px]'>
                         {yacht.status === YachtStatus.PENDING ? (
                           <button

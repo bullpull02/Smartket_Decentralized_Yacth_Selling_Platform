@@ -6,8 +6,11 @@ import MainLayout from 'layouts/MainLayout'
 import Loading from 'components/Loading'
 import { ReactComponent as RemoveIcon } from 'icons/recycle-bin.svg'
 
-import { apiGetYacht } from 'utils/yacht'
-import { YachtStatus } from 'constants/index'
+import { useAppDispatch } from 'app/hooks'
+import { setLoadingModalOpen } from 'slices/modal'
+import { cx } from 'utils'
+import { apiGetYacht, apiListYacht } from 'utils/yacht'
+import { YachtStatus, StatusColor } from 'constants/index'
 
 const classNames = {
   propertyDiv: 'flex items-end space-x-4',
@@ -20,6 +23,7 @@ const YachtDetail = () => {
   const [yacht, setYacht] = useState<any>({})
   const [prevImage, setPrevImage] = useState<string>('')
   const { id } = useParams()
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
     if (!id) return
@@ -43,7 +47,33 @@ const YachtDetail = () => {
     })()
   }, [id])
 
-  const handleListYacht = async (): Promise<void> => {}
+  const handleListYacht = async (id: number): Promise<void> => {
+    try {
+      const price = window.prompt('Please enter the price of this yacht') || ''
+
+      if (!(+price > 0 && +price < 1000000000)) {
+        toast.error('Invalid price')
+        return
+      }
+
+      if (!window.confirm('Are you sure you really want to list this yacht?')) return
+
+      dispatch(setLoadingModalOpen(true))
+
+      const data = await apiListYacht({ id, price: +price })
+
+      if (data.success) {
+        setYacht(data.data.yacht)
+        toast.success('Successfully listed this yacht')
+      } else {
+        toast.error(data.message)
+      }
+    } catch (_) {
+      toast.error('Network error')
+    }
+
+    dispatch(setLoadingModalOpen(false))
+  }
 
   const handleRemoveYacht = async (): Promise<void> => {}
 
@@ -55,12 +85,17 @@ const YachtDetail = () => {
         ) : (
           <div className='relative grid grid-cols-3 gap-8'>
             <RemoveIcon
-              className='absolute right-0 top-0 w-8 cursor-pointer transition hover:opacity-80'
+              className='absolute right-0 top-0 w-6 cursor-pointer transition hover:opacity-80'
               title='DELETE YACHT'
               onClick={handleRemoveYacht}
             />
             <div className='relative col-span-2 grid gap-4'>
-              <h4 className='absolute left-0 top-0 rounded-br bg-gray-900 bg-opacity-50 p-2 text-xl font-bold uppercase backdrop-blur'>
+              <h4
+                className={cx(
+                  'absolute left-0 top-0 rounded-br p-2 text-xl font-bold uppercase backdrop-blur',
+                  StatusColor[yacht.status],
+                )}
+              >
                 {yacht.status}
               </h4>
               <h5 className='absolute right-0 top-0 rounded-l-full bg-green-800 p-1 pl-3 text-sm font-bold uppercase'>
@@ -143,7 +178,7 @@ const YachtDetail = () => {
                   yacht.status === YachtStatus.ACCEPTED && (
                     <button
                       className='rounded bg-blue-500 px-4 py-2 font-bold uppercase shadow'
-                      onClick={handleListYacht}
+                      onClick={() => handleListYacht(yacht.id)}
                     >
                       List my yacht
                     </button>
