@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-hot-toast'
 
 import MainLayout from 'layouts/MainLayout'
@@ -10,7 +10,14 @@ import { useAppDispatch, useAppSelector } from 'app/hooks'
 import type { RootState } from 'app/store'
 import { setLoadingModalOpen } from 'slices/modal'
 import { cx } from 'utils'
-import { apiGetYacht, apiListYacht } from 'utils/yacht'
+import {
+  apiBuyYacht,
+  apiGetYacht,
+  apiListYacht,
+  apiOfferYacht,
+  apiRemoveYacht,
+  apiSellYacht,
+} from 'utils/yacht'
 import { YachtStatus, StatusColor } from 'constants/index'
 
 const classNames = {
@@ -24,6 +31,7 @@ const YachtDetail = () => {
   const [loading, setLoading] = useState<boolean>(true)
   const [yacht, setYacht] = useState<any>({})
   const [prevImage, setPrevImage] = useState<string>('')
+  const navigate = useNavigate()
   const { id } = useParams()
   const dispatch = useAppDispatch()
   const user = useAppSelector((state: RootState) => state.user.user)
@@ -78,11 +86,92 @@ const YachtDetail = () => {
     dispatch(setLoadingModalOpen(false))
   }
 
-  const handleOfferYacht = async (id: number): Promise<void> => {}
+  const handleOfferYacht = async (id: number): Promise<void> => {
+    try {
+      const price = window.prompt('Please enter the price of this yacht') || ''
 
-  const handleBuyYacht = async (id: number): Promise<void> => {}
+      if (!(+price > 0 && +price < 1000000000)) {
+        toast.error('Invalid price')
+        return
+      }
 
-  const handleRemoveYacht = async (id: number): Promise<void> => {}
+      if (!window.confirm('Are you sure you really want to offer this yacht?')) return
+
+      dispatch(setLoadingModalOpen(true))
+
+      const data = await apiOfferYacht({ id, price: +price })
+
+      if (data.success) {
+        setYacht(data.data.yacht)
+      } else {
+        toast.error(data.message)
+      }
+    } catch (_) {
+      toast.error('Network error')
+    }
+
+    dispatch(setLoadingModalOpen(false))
+  }
+
+  const handleBuyYacht = async (id: number, seller: number): Promise<void> => {
+    try {
+      if (!window.confirm('Are you sure you really want to buy this yacht?')) return
+
+      dispatch(setLoadingModalOpen(true))
+
+      const data = await apiBuyYacht({ id, seller })
+
+      if (data.success) {
+        setYacht(data.data.yacht)
+      } else {
+        toast.error(data.message)
+      }
+    } catch (_) {
+      toast.error('Network error')
+    }
+
+    dispatch(setLoadingModalOpen(false))
+  }
+
+  const handleSellYacht = async (id: number, buyer: number): Promise<void> => {
+    try {
+      if (!window.confirm('Are you sure you really want to sell this yacht?')) return
+
+      dispatch(setLoadingModalOpen(true))
+
+      const data = await apiSellYacht({ id, buyer })
+
+      if (data.success) {
+        setYacht(data.data.yacht)
+      } else {
+        toast.error(data.message)
+      }
+    } catch (_) {
+      toast.error('Network error')
+    }
+
+    dispatch(setLoadingModalOpen(false))
+  }
+
+  const handleRemoveYacht = async (id: number): Promise<void> => {
+    try {
+      if (!window.confirm('Are you sure you really want to remove this yacht?')) return
+
+      dispatch(setLoadingModalOpen(true))
+
+      const data = await apiRemoveYacht(id)
+
+      if (data.success) {
+        navigate('/my-nfts')
+      } else {
+        toast.error(data.message)
+      }
+    } catch (_) {
+      toast.error('Network error')
+    }
+
+    dispatch(setLoadingModalOpen(false))
+  }
 
   return (
     <MainLayout title='SMARTKET - YACHT DETAIL'>
@@ -91,11 +180,13 @@ const YachtDetail = () => {
           <Loading />
         ) : (
           <div className='relative grid grid-cols-3 gap-8'>
-            <RemoveIcon
-              className='absolute right-0 top-0 w-6 cursor-pointer transition hover:opacity-80'
-              title='DELETE YACHT'
-              onClick={() => handleRemoveYacht(yacht.id)}
-            />
+            {yacht.id === user.id && (
+              <RemoveIcon
+                className='absolute right-0 top-0 w-6 cursor-pointer transition hover:opacity-80'
+                title='DELETE YACHT'
+                onClick={() => handleRemoveYacht(yacht.id)}
+              />
+            )}
             <div className='relative col-span-2 grid gap-4'>
               <h4
                 className={cx(
@@ -182,18 +273,36 @@ const YachtDetail = () => {
                 {yacht.status === YachtStatus.PENDING && (
                   <p className='text-xl italic text-gray-500'>Waiting for admin to approve...</p>
                 )}
-                {yacht.status === YachtStatus.ACCEPTED && yacht.owner === user.id ? (
-                  <button className={classNames.button} onClick={() => handleListYacht(yacht.id)}>
-                    List my yacht
-                  </button>
+                {yacht.status === YachtStatus.ACCEPTED ? (
+                  yacht.owner === user.id ? (
+                    <button className={classNames.button} onClick={() => handleListYacht(yacht.id)}>
+                      List my yacht
+                    </button>
+                  ) : (
+                    <button
+                      className={classNames.button}
+                      onClick={() => handleOfferYacht(yacht.id)}
+                    >
+                      Send offer
+                    </button>
+                  )
                 ) : (
-                  <button className={classNames.button} onClick={() => handleOfferYacht(yacht.id)}>
-                    Send offer
-                  </button>
+                  <></>
                 )}
                 {yacht.status === YachtStatus.LISTED && yacht.owner !== user.id && (
-                  <button className={classNames.button} onClick={() => handleBuyYacht(yacht.id)}>
+                  <button
+                    className={classNames.button}
+                    onClick={() => handleBuyYacht(yacht.id, yacht.owner)}
+                  >
                     Buy this yacht
+                  </button>
+                )}
+                {yacht.status === YachtStatus.OFFERED && yacht.owner === user.id && (
+                  <button
+                    className={classNames.button}
+                    onClick={() => handleSellYacht(yacht.id, yacht.offeredBy)}
+                  >
+                    Sell this yacht
                   </button>
                 )}
               </div>

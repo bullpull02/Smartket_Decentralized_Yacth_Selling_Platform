@@ -31,6 +31,27 @@ export default class YachtController {
 		}
 	}
 
+	findYachtsForSale = async (_: Request, res: Response) => {
+		try {
+			const yachts = await Yacht.findAll({
+				where: {
+					status: {
+						[Op.or]: [
+							{ [Op.eq]: YachtStatus.ACCEPTED },
+							{ [Op.eq]: YachtStatus.LISTED },
+							{ [Op.eq]: YachtStatus.OFFERED },
+						],
+					},
+				},
+				include: [{ model: User }],
+			})
+
+			return res.json({ status: 200, success: true, data: { yachts } })
+		} catch (err) {
+			errorHandler(500, err.message, res)
+		}
+	}
+
 	create = async (req: Request, res: Response) => {
 		try {
 			const validator = validationResult(req)
@@ -56,10 +77,11 @@ export default class YachtController {
 	accept = async (req: Request, res: Response) => {
 		try {
 			const { id } = req.params
+			const { userId } = req.body
 
 			await Yacht.update(
 				{ status: YachtStatus.ACCEPTED },
-				{ where: { id, status: YachtStatus.PENDING } }
+				{ where: { id, owner: userId, status: YachtStatus.PENDING } }
 			)
 
 			const yachts = await Yacht.findAll({ include: [{ model: User }] })
@@ -73,10 +95,11 @@ export default class YachtController {
 	decline = async (req: Request, res: Response) => {
 		try {
 			const { id } = req.params
+			const { userId } = req.body
 
 			await Yacht.update(
 				{ status: YachtStatus.DECLINED },
-				{ where: { id, status: YachtStatus.PENDING } }
+				{ where: { id, owner: userId, status: YachtStatus.PENDING } }
 			)
 
 			return res.json({ status: 200, success: true })
@@ -88,11 +111,11 @@ export default class YachtController {
 	list = async (req: Request, res: Response) => {
 		try {
 			const { id } = req.params
-			const { price } = req.body
+			const { userId, price } = req.body
 
 			await Yacht.update(
 				{ status: YachtStatus.LISTED, price },
-				{ where: { id, status: YachtStatus.ACCEPTED } }
+				{ where: { id, owner: userId, status: YachtStatus.ACCEPTED } }
 			)
 
 			const yacht = await Yacht.findOne({ where: { id }, include: [{ model: User }] })
@@ -106,14 +129,16 @@ export default class YachtController {
 	buy = async (req: Request, res: Response) => {
 		try {
 			const { id } = req.params
-			const { seller, buyer } = req.body
+			const { seller, userId } = req.body
 
 			await Yacht.update(
-				{ status: YachtStatus.SOLD, owner: buyer },
+				{ status: YachtStatus.SOLD, owner: userId },
 				{ where: { id, status: YachtStatus.LISTED, owner: seller } }
 			)
 
-			return res.json({ status: 200, success: true })
+			const yacht = await Yacht.findOne({ where: { id }, include: [{ model: User }] })
+
+			return res.json({ status: 200, success: true, data: { yacht } })
 		} catch (err) {
 			errorHandler(500, err.message, res)
 		}
@@ -124,7 +149,7 @@ export default class YachtController {
 			const { id } = req.params
 
 			await Yacht.update(
-				{ status: YachtStatus.ACCEPTED },
+				{ status: YachtStatus.PURCHASED },
 				{ where: { id, status: YachtStatus.SOLD } }
 			)
 
@@ -137,45 +162,34 @@ export default class YachtController {
 	offer = async (req: Request, res: Response) => {
 		try {
 			const { id } = req.params
-			const { price } = req.body
+			const { price, userId } = req.body
 
 			await Yacht.update(
-				{ status: YachtStatus.OFFERED },
+				{ status: YachtStatus.OFFERED, price, offeredBy: userId },
 				{ where: { id, status: YachtStatus.ACCEPTED } }
 			)
 
-			return res.json({ status: 200, success: true })
+			const yacht = await Yacht.findOne({ where: { id }, include: [{ model: User }] })
+
+			return res.json({ status: 200, success: true, data: { yacht } })
 		} catch (err) {
 			errorHandler(500, err.message, res)
 		}
 	}
 
-	acceptOffer = async (req: Request, res: Response) => {
+	sell = async (req: Request, res: Response) => {
 		try {
 			const { id } = req.params
+			const { userId, buyer } = req.body
 
-			return res.json({ status: 200, success: true })
-		} catch (err) {
-			errorHandler(500, err.message, res)
-		}
-	}
+			await Yacht.update(
+				{ owner: buyer, status: YachtStatus.SOLD },
+				{ where: { id, owner: userId } }
+			)
 
-	getYachtsForSale = async (_: Request, res: Response) => {
-		try {
-			const yachts = await Yacht.findAll({
-				where: {
-					status: {
-						[Op.or]: [
-							{ [Op.eq]: YachtStatus.ACCEPTED },
-							{ [Op.eq]: YachtStatus.LISTED },
-							{ [Op.eq]: YachtStatus.OFFERED },
-						],
-					},
-				},
-				include: [{ model: User }],
-			})
+			const yacht = await Yacht.findOne({ where: { id }, include: [{ model: User }] })
 
-			return res.json({ status: 200, success: true, data: { yachts } })
+			return res.json({ status: 200, success: true, data: { yacht } })
 		} catch (err) {
 			errorHandler(500, err.message, res)
 		}

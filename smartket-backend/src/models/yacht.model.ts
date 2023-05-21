@@ -126,6 +126,12 @@ class Yacht extends Model<Yacht> {
 		defaultValue: '[]',
 	})
 	images: string
+
+	@Column({
+		type: DataType.INTEGER,
+		allowNull: true,
+	})
+	offeredBy: number
 }
 
 export default Yacht

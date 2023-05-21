@@ -35,3 +35,39 @@ export const apiGetYachtsForSale = async (): Promise<any> => {
     throw err
   }
 }
+
+export const apiBuyYacht = async ({ id, seller }: { id: number; seller: number }): Promise<any> => {
+  try {
+    const { data } = await axios.put(`/yacht/buy/${id}`, { seller })
+    return data
+  } catch (err) {
+    throw err
+  }
+}
+
+export const apiOfferYacht = async ({ id, price }: { id: number; price: number }): Promise<any> => {
+  try {
+    const { data } = await axios.put(`/yacht/offer/${id}`, { price })
+    return data
+  } catch (err) {
+    throw err
+  }
+}
+
+export const apiSellYacht = async ({ id, buyer }: { id: number; buyer: number }): Promise<any> => {
+  try {
+    const { data } = await axios.put(`/yacht/sell/${id}`, { buyer })
+    return data
+  } catch (err) {
+    throw err
+  }
+}
+
+export const apiRemoveYacht = async (id: number): Promise<any> => {
+  try {
+    const { data } = await axios.delete(`/yacht/${id}`)
+    return data
+  } catch (err) {
+    throw err
+  }
+}
