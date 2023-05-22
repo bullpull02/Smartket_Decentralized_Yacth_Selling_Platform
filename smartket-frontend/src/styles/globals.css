@@ -8,7 +8,7 @@ body {
 }
 
 .container {
-  @apply mx-auto !max-w-7xl;
+  @apply mx-auto !max-w-[1320px] px-5;
 }
 
 .wallet-connect-modal .wallet-icon {

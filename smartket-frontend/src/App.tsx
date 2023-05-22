@@ -1,5 +1,5 @@
 import { Suspense } from 'react'
-import { createConfig, configureChains, mainnet, WagmiConfig } from 'wagmi'
+import { createClient, configureChains, mainnet, WagmiConfig } from 'wagmi'
 import { alchemyProvider } from 'wagmi/providers/alchemy'
 import { publicProvider } from 'wagmi/providers/public'
 import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
@@ -11,12 +11,12 @@ import AppRoutes from 'routes'
 import Modal from 'components/Modal'
 import { PropagateLoader } from 'react-spinners'
 
-const { chains, publicClient, webSocketPublicClient } = configureChains(
+const { chains, provider, webSocketProvider } = configureChains(
   [mainnet],
   [alchemyProvider({ apiKey: process.env.REACT_APP_ALCHEMY_API_KEY || '' }), publicProvider()],
 )
 
-const config = createConfig({
+const client = createClient({
   autoConnect: true,
   connectors: [
     new MetaMaskConnector({ chains }),
@@ -33,14 +33,14 @@ const config = createConfig({
       },
     }),
   ],
-  publicClient,
-  webSocketPublicClient,
+  provider,
+  webSocketProvider,
 })
 
 const App = () => {
   return (
     <>
-      <WagmiConfig config={config}>
+      <WagmiConfig client={client}>
         <Suspense
           fallback={
             <div className='fixed inset-0 flex items-center justify-center backdrop-blur'>
