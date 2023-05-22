@@ -19,10 +19,9 @@ class YachtRouter {
 		this.router.route('/purchase/:id').put(signMiddleware, this.yachtController.purchase)
 		this.router.route('/offer/:id').put(signMiddleware, this.yachtController.offer)
 		this.router.route('/sell/:id').put(signMiddleware, this.yachtController.sell)
-		this.router
-			.route('/marketplace')
-			.get(signMiddleware, this.yachtController.findYachtsForSale)
-		this.router.route('/:id').get(signMiddleware, this.yachtController.findById)
+		this.router.route('/decline/:id').put(signMiddleware, this.yachtController.decline)
+		this.router.route('/marketplace').get(this.yachtController.findYachtsForSale)
+		this.router.route('/:id').get(this.yachtController.findById)
 		this.router.route('/:id').delete(signMiddleware, this.yachtController.delete)
 		this.router.route('/').get(signMiddleware, this.yachtController.findAll)
 		this.router

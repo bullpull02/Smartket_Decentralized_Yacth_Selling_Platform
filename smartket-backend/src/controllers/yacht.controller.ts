@@ -97,12 +97,26 @@ export default class YachtController {
 			const { id } = req.params
 			const { userId } = req.body
 
-			await Yacht.update(
-				{ status: YachtStatus.DECLINED },
-				{ where: { id, owner: userId, status: YachtStatus.PENDING } }
-			)
+			const yacht = await Yacht.findByPk(id)
 
-			return res.json({ status: 200, success: true })
+			if (yacht.status === YachtStatus.OFFERED) {
+				await Yacht.update(
+					{ status: YachtStatus.ACCEPTED },
+					{ where: { id, owner: userId } }
+				)
+
+				const yacht = await Yacht.findOne({ where: { id }, include: [{ model: User }] })
+
+				return res.json({ status: 200, success: true, data: { yacht } })
+			} else if (yacht.status === YachtStatus.PENDING) {
+				await Yacht.update({ status: YachtStatus.DECLINED }, { where: { id } })
+
+				const yachts = await Yacht.findAll({ include: [{ model: User }] })
+
+				return res.json({ status: 200, success: true, data: { yachts } })
+			}
+
+			return res.json({ status: 200, success: false, message: 'Invalid request' })
 		} catch (err) {
 			errorHandler(500, err.message, res)
 		}

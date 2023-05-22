@@ -13,10 +13,14 @@ import { setLoadingModalOpen } from 'slices/modal'
 const headerMenu: Link[] = [
   // { name: 'Home', path: '/', auth: undefined },
   { name: 'Marketplace', path: '/marketplace', auth: undefined },
-  { name: 'Create', path: '/create/yacht', auth: true },
   { name: 'Login', path: '', auth: false },
   { name: 'Register', path: '/register', auth: false },
 ]
+
+const classNames = {
+  submenu: 'ml-4',
+  submenuItem: 'cursor-pointer hover:opacity-80 font-medium',
+}
 
 const Header = () => {
   const navigate = useNavigate()
@@ -71,7 +75,7 @@ const Header = () => {
           </Link>
           <div className='flex items-center space-x-8'>
             <nav>
-              <ul className='flex space-x-8'>
+              <ul className='flex items-center space-x-8'>
                 {headerMenu.map(
                   (item, ind) =>
                     (item.auth === isLoggedIn || item.auth === undefined) && (
@@ -83,6 +87,60 @@ const Header = () => {
                         <span className='cursor-pointer'>{item.name}</span>
                       </li>
                     ),
+                )}
+                {isLoggedIn && (
+                  <li className='group relative flex h-20 items-center justify-center'>
+                    <span className='cursor-pointer hover:opacity-80'>Create</span>
+                    <ul className='trans pointer-events-none absolute bottom-0 left-0 flex w-48 translate-y-full flex-col space-y-2 rounded bg-gray-800 p-4 opacity-0 shadow group-hover:pointer-events-auto group-hover:opacity-100'>
+                      <li>
+                        <span className='text-gray-500'>Building</span>
+                        <ul className={classNames.submenu}>
+                          <li>
+                            <span className={classNames.submenuItem}>Condo</span>
+                          </li>
+                        </ul>
+                      </li>
+                      <li>
+                        <span className='text-gray-500'>Condo</span>
+                        <ul className={classNames.submenu}>
+                          <li>
+                            <span className={classNames.submenuItem}>Apartment</span>
+                          </li>
+                        </ul>
+                      </li>
+                      <li>
+                        <span className='text-gray-500'>Land</span>
+                        <ul className={classNames.submenu}>
+                          <span className={classNames.submenuItem}>Official House</span>
+                        </ul>
+                      </li>
+                      <li>
+                        <span className={classNames.submenuItem}>Mall</span>
+                      </li>
+                      <li>
+                        <span className={classNames.submenuItem}>Company Warehouse</span>
+                      </li>
+                      <li>
+                        <span className='text-gray-500'>Business</span>
+                        <ul className={classNames.submenu}>
+                          <span className={classNames.submenuItem}>Shop</span>
+                        </ul>
+                      </li>
+                      <li>
+                        <span className='text-gray-500'>Personal Assets</span>
+                        <ul className={classNames.submenu}>
+                          <li>
+                            <span className={classNames.submenuItem}>
+                              <Link to='/create/yacht'>Yacht</Link>
+                            </span>
+                          </li>
+                          <li>
+                            <span className={classNames.submenuItem}>Car</span>
+                          </li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </li>
                 )}
               </ul>
             </nav>
