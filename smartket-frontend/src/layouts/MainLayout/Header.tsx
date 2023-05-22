@@ -11,8 +11,8 @@ import { login } from 'slices/user'
 import { setLoadingModalOpen } from 'slices/modal'
 
 const headerMenu: Link[] = [
-  { name: 'Home', path: '/', auth: undefined },
-  { name: 'Marketplace', path: '/marketplace', auth: true },
+  // { name: 'Home', path: '/', auth: undefined },
+  { name: 'Marketplace', path: '/marketplace', auth: undefined },
   { name: 'Create', path: '/create/yacht', auth: true },
   { name: 'Login', path: '', auth: false },
   { name: 'Register', path: '/register', auth: false },

@@ -35,6 +35,7 @@ const YachtDetail = () => {
   const { id } = useParams()
   const dispatch = useAppDispatch()
   const user = useAppSelector((state: RootState) => state.user.user)
+  const isLoggedIn = useAppSelector((state: RootState) => state.user.isLoggedIn)
 
   useEffect(() => {
     if (!id) return
@@ -153,6 +154,8 @@ const YachtDetail = () => {
     dispatch(setLoadingModalOpen(false))
   }
 
+  const handleDeclineYacht = async (id: number): Promise<void> => {}
+
   const handleRemoveYacht = async (id: number): Promise<void> => {
     try {
       if (!window.confirm('Are you sure you really want to remove this yacht?')) return
@@ -269,43 +272,56 @@ const YachtDetail = () => {
                 </div>
               </div>
               <hr className='border-t border-gray-700' />
-              <div>
-                {yacht.status === YachtStatus.PENDING && (
-                  <p className='text-xl italic text-gray-500'>Waiting for admin to approve...</p>
-                )}
-                {yacht.status === YachtStatus.ACCEPTED ? (
-                  yacht.owner === user.id ? (
-                    <button className={classNames.button} onClick={() => handleListYacht(yacht.id)}>
-                      List my yacht
-                    </button>
+              {isLoggedIn && (
+                <div className='flex flex-wrap gap-4'>
+                  {yacht.status === YachtStatus.PENDING && (
+                    <p className='text-xl italic text-gray-500'>Waiting for admin to approve...</p>
+                  )}
+                  {yacht.status === YachtStatus.ACCEPTED ? (
+                    yacht.owner === user.id ? (
+                      <button
+                        className={classNames.button}
+                        onClick={() => handleListYacht(yacht.id)}
+                      >
+                        List my yacht
+                      </button>
+                    ) : (
+                      <button
+                        className={classNames.button}
+                        onClick={() => handleOfferYacht(yacht.id)}
+                      >
+                        Send offer
+                      </button>
+                    )
                   ) : (
+                    <></>
+                  )}
+                  {yacht.status === YachtStatus.LISTED && yacht.owner !== user.id && (
                     <button
                       className={classNames.button}
-                      onClick={() => handleOfferYacht(yacht.id)}
+                      onClick={() => handleBuyYacht(yacht.id, yacht.owner)}
                     >
-                      Send offer
+                      Buy this yacht
                     </button>
-                  )
-                ) : (
-                  <></>
-                )}
-                {yacht.status === YachtStatus.LISTED && yacht.owner !== user.id && (
-                  <button
-                    className={classNames.button}
-                    onClick={() => handleBuyYacht(yacht.id, yacht.owner)}
-                  >
-                    Buy this yacht
-                  </button>
-                )}
-                {yacht.status === YachtStatus.OFFERED && yacht.owner === user.id && (
-                  <button
-                    className={classNames.button}
-                    onClick={() => handleSellYacht(yacht.id, yacht.offeredBy)}
-                  >
-                    Sell this yacht
-                  </button>
-                )}
-              </div>
+                  )}
+                  {yacht.status === YachtStatus.OFFERED && yacht.owner === user.id && (
+                    <>
+                      <button
+                        className={classNames.button}
+                        onClick={() => handleSellYacht(yacht.id, yacht.offeredBy)}
+                      >
+                        Sell this yacht
+                      </button>
+                      <button
+                        className={classNames.button}
+                        onClick={() => handleDeclineYacht(yacht.id)}
+                      >
+                        Decline
+                      </button>
+                    </>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         )}

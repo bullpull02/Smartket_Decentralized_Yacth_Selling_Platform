@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom'
 import { Field, Form } from 'react-final-form'
 import { useAccount, useSignMessage } from 'wagmi'
 import toast from 'react-hot-toast'
@@ -12,6 +13,7 @@ import validate from 'utils/validator'
 import countries from 'constants/country'
 
 const Register = () => {
+  const navigate = useNavigate()
   const { address } = useAccount()
   const { signMessageAsync } = useSignMessage({ message: 'Welcome to Smartket' })
   const dispatch = useAppDispatch()
@@ -35,6 +37,7 @@ const Register = () => {
         toast.error(payload.message)
       } else {
         toast.success('Successfully registered')
+        navigate('/marketplace')
       }
     } catch (err: any) {
       toast.error(err.message)

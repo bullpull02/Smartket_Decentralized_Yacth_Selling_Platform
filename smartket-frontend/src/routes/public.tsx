@@ -1,6 +1,5 @@
 import { lazyImport } from 'utils'
 
-const { default: Home } = lazyImport(async () => await import('pages/Home'), 'default')
 const { default: Register } = lazyImport(async () => await import('pages/Auth/Register'), 'default')
 const { default: CreateYacht } = lazyImport(
   async () => await import('pages/Create/Yacht'),
@@ -22,7 +21,7 @@ const { default: YachtManagement } = lazyImport(
 )
 
 export const publicRoutes = [
-  { path: '/', element: <Home /> },
+  { path: '/', element: <Marketplace /> },
   { path: '/register', element: <Register /> },
   { path: '/create/yacht', element: <CreateYacht /> },
   { path: '/my-nfts', element: <MyNFTs /> },
