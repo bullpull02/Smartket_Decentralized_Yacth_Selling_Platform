@@ -12,6 +12,7 @@ import { setLoadingModalOpen } from 'slices/modal'
 import { cx } from 'utils'
 import {
   apiBuyYacht,
+  apiDeclineYacht,
   apiGetYacht,
   apiListYacht,
   apiOfferYacht,
@@ -51,11 +52,11 @@ const YachtDetail = () => {
         } else {
           toast.error(data.message)
         }
-      } catch (err: any) {
-        toast.error(err.message)
+      } catch (_) {
+        toast.error('Network Error')
+      } finally {
+        setLoading(false)
       }
-
-      setLoading(false)
     })()
   }, [id])
 
@@ -82,9 +83,9 @@ const YachtDetail = () => {
       }
     } catch (_) {
       toast.error('Network error')
+    } finally {
+      dispatch(setLoadingModalOpen(false))
     }
-
-    dispatch(setLoadingModalOpen(false))
   }
 
   const handleOfferYacht = async (id: number): Promise<void> => {
@@ -109,9 +110,9 @@ const YachtDetail = () => {
       }
     } catch (_) {
       toast.error('Network error')
+    } finally {
+      dispatch(setLoadingModalOpen(false))
     }
-
-    dispatch(setLoadingModalOpen(false))
   }
 
   const handleBuyYacht = async (id: number, seller: number): Promise<void> => {
@@ -129,9 +130,9 @@ const YachtDetail = () => {
       }
     } catch (_) {
       toast.error('Network error')
+    } finally {
+      dispatch(setLoadingModalOpen(false))
     }
-
-    dispatch(setLoadingModalOpen(false))
   }
 
   const handleSellYacht = async (id: number, buyer: number): Promise<void> => {
@@ -149,12 +150,30 @@ const YachtDetail = () => {
       }
     } catch (_) {
       toast.error('Network error')
+    } finally {
+      dispatch(setLoadingModalOpen(false))
     }
-
-    dispatch(setLoadingModalOpen(false))
   }
 
-  const handleDeclineYacht = async (id: number): Promise<void> => {}
+  const handleDeclineYacht = async (id: number): Promise<void> => {
+    try {
+      if (!window.confirm('Are you sure you really want to decline this yacht?')) return
+
+      dispatch(setLoadingModalOpen(true))
+
+      const data = await apiDeclineYacht(id)
+
+      if (data.success) {
+        setYacht(data.data.yacht)
+      } else {
+        toast.error(data.message)
+      }
+    } catch (_) {
+      toast.error('Network error')
+    } finally {
+      dispatch(setLoadingModalOpen(false))
+    }
+  }
 
   const handleRemoveYacht = async (id: number): Promise<void> => {
     try {
@@ -171,9 +190,9 @@ const YachtDetail = () => {
       }
     } catch (_) {
       toast.error('Network error')
+    } finally {
+      dispatch(setLoadingModalOpen(false))
     }
-
-    dispatch(setLoadingModalOpen(false))
   }
 
   return (

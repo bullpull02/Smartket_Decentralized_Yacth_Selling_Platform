@@ -30,11 +30,11 @@ const YachtManagement = () => {
         } else {
           toast.error(data.message)
         }
-      } catch (err: any) {
-        toast.error(err.message)
+      } catch (_) {
+        toast.error('Network Error')
+      } finally {
+        setLoading(false)
       }
-
-      setLoading(false)
     })()
   }, [])
 
@@ -51,11 +51,11 @@ const YachtManagement = () => {
       } else {
         toast.error(data.message)
       }
-    } catch (err: any) {
-      toast.error(err.message)
+    } catch (_) {
+      toast.error('Network Error')
+    } finally {
+      dispatch(setLoadingModalOpen(false))
     }
-
-    dispatch(setLoadingModalOpen(false))
   }
 
   return (

@@ -24,9 +24,9 @@ const YachtMarketplace = () => {
         }
       } catch (_) {
         toast.error('Network error')
+      } finally {
+        setLoading(false)
       }
-
-      setLoading(false)
     })()
   }, [])
 

@@ -53,11 +53,11 @@ const Create = () => {
       } else {
         toast.error(payload.message)
       }
-    } catch (err: any) {
-      toast.error(err.message)
+    } catch (_) {
+      toast.error('Network Error')
+    } finally {
+      dispatch(setLoadingModalOpen(false))
     }
-
-    dispatch(setLoadingModalOpen(false))
   }
 
   const handleUploadMainImage = (e: React.ChangeEvent<HTMLInputElement>) => {

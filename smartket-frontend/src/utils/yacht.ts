@@ -63,6 +63,15 @@ export const apiSellYacht = async ({ id, buyer }: { id: number; buyer: number })
   }
 }
 
+export const apiDeclineYacht = async (id: number): Promise<any> => {
+  try {
+    const { data } = await axios.put(`/yacht/decline/${id}`)
+    return data
+  } catch (err) {
+    throw err
+  }
+}
+
 export const apiRemoveYacht = async (id: number): Promise<any> => {
   try {
     const { data } = await axios.delete(`/yacht/${id}`)

@@ -39,11 +39,11 @@ const Register = () => {
         toast.success('Successfully registered')
         navigate('/marketplace')
       }
-    } catch (err: any) {
-      toast.error(err.message)
+    } catch (_) {
+      toast.error('Network Error')
+    } finally {
+      dispatch(setLoadingModalOpen(false))
     }
-
-    dispatch(setLoadingModalOpen(false))
   }
 
   return (
