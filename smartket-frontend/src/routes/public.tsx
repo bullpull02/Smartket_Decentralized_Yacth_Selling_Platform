@@ -1,31 +1,48 @@
 import { lazyImport } from 'utils'
 
 const { default: Register } = lazyImport(async () => await import('pages/Auth/Register'), 'default')
-const { default: CreateYacht } = lazyImport(
-  async () => await import('pages/Create/Yacht'),
+const { default: CreateShop } = lazyImport(
+  async () => await import('pages/Create/Business/Shop'),
   'default',
 )
-const { default: MyNFTs } = lazyImport(async () => await import('pages/MyNFTs'), 'default')
+const { default: CreateYacht } = lazyImport(
+  async () => await import('pages/Create/PersonalAssets/Yacht'),
+  'default',
+)
+const { default: ShopDetail } = lazyImport(
+  async () => await import('pages/Details/Business/Shop'),
+  'default',
+)
 const { default: YachtDetail } = lazyImport(
-  async () => await import('pages/Details/Yacht'),
+  async () => await import('pages/Details/PersonalAssets/Yacht'),
   'default',
 )
 const { default: Marketplace } = lazyImport(
   async () => await import('pages/Marketplace'),
   'default',
 )
+const { default: MyAssets } = lazyImport(async () => await import('pages/MyAssets'), 'default')
+const { default: Profile } = lazyImport(async () => await import('pages/Profile'), 'default')
 
+const { default: ShopManagement } = lazyImport(
+  async () => await import('pages/Admin/Management/Assets/Business/Shop'),
+  'default',
+)
 const { default: YachtManagement } = lazyImport(
-  async () => await import('pages/Admin/Management/Yacht'),
+  async () => await import('pages/Admin/Management/Assets/PersonalAssets/Yacht/'),
   'default',
 )
 
 export const publicRoutes = [
   { path: '/', element: <Marketplace /> },
   { path: '/register', element: <Register /> },
-  { path: '/create/yacht', element: <CreateYacht /> },
-  { path: '/my-nfts', element: <MyNFTs /> },
+  { path: '/create/personal-assets/yacht', element: <CreateYacht /> },
+  { path: '/create/business/shop', element: <CreateShop /> },
+  { path: '/details/shop/:id', Element: <ShopDetail /> },
   { path: '/details/yacht/:id', element: <YachtDetail /> },
   { path: '/marketplace', element: <Marketplace /> },
-  { path: '/admin/management/yacht', element: <YachtManagement /> },
+  { path: '/my-assets', element: <MyAssets /> },
+  { path: './profile', element: <Profile /> },
+  { path: '/admin/management/assets/business/shop', element: <ShopManagement /> },
+  { path: '/admin/management/assets/personal-assets/yacht', element: <YachtManagement /> },
 ]

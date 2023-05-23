@@ -6,7 +6,7 @@ import Loading from 'components/Loading'
 
 import { apiGetYachtsForSale } from 'utils/yacht'
 import { cx } from 'utils'
-import { YachtStatus, StatusColor } from 'constants/index'
+import { YachtStatus, StatusColor } from 'constants/yacht'
 
 const YachtMarketplace = () => {
   const [loading, setLoading] = useState<boolean>(true)

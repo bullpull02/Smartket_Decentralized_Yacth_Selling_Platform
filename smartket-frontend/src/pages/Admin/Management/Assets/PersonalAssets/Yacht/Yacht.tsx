@@ -8,7 +8,7 @@ import { useAppDispatch } from 'app/hooks'
 import { setLoadingModalOpen } from 'slices/modal'
 import { apiApproveYacht, apiGetAllYachts } from 'utils/admin/yacht'
 import { cx, shortenAddress } from 'utils'
-import { YachtStatus } from 'constants/index'
+import { YachtStatus } from 'constants/yacht'
 
 const classNames = {
   th: 'px-4 py-2 text-left text-sm font-semibold uppercase whitespace-nowrap',

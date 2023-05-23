@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-hot-toast'
 import { useAccount, useSignMessage } from 'wagmi'
@@ -9,32 +10,21 @@ import { useAppDispatch, useAppSelector } from 'app/hooks'
 import { RootState } from 'app/store'
 import { login } from 'slices/user'
 import { setLoadingModalOpen } from 'slices/modal'
-
-const headerMenu: Link[] = [
-  // { name: 'Home', path: '/', auth: undefined },
-  { name: 'Marketplace', path: '/marketplace', auth: undefined },
-  { name: 'Login', path: '', auth: false },
-  { name: 'Register', path: '/register', auth: false },
-]
-
-const classNames = {
-  submenu: 'ml-4',
-  submenuItem: 'cursor-pointer hover:opacity-80 font-medium',
-}
+import { cx } from 'utils'
+import { menu } from 'config'
 
 const Header = () => {
+  const [hoveredMenu, setHoveredMenu] = useState<string>('')
   const navigate = useNavigate()
   const isLoggedIn = useAppSelector((state: RootState) => state.user.isLoggedIn)
   const { address } = useAccount()
   const { signMessageAsync } = useSignMessage({ message: 'Welcome to Smartket' })
   const dispatch = useAppDispatch()
 
-  const handleClickLink = (link: Link): void => {
-    if (link.path !== '') {
-      navigate(link.path)
-      return
-    }
-    if (link.name === 'Login') {
+  const handleClickLink = (to: string): void => {
+    if (to !== '') {
+      navigate(to)
+    } else if (to === '') {
       handleLogin()
     }
   }
@@ -76,71 +66,44 @@ const Header = () => {
           <div className='flex items-center space-x-8'>
             <nav>
               <ul className='flex items-center space-x-8'>
-                {headerMenu.map(
-                  (item, ind) =>
-                    (item.auth === isLoggedIn || item.auth === undefined) && (
+                {menu.map(
+                  (menuItem, ind) =>
+                    (menuItem.auth === isLoggedIn || menuItem.auth === undefined) && (
                       <li
-                        className='hover:opacity-80'
-                        onClick={() => handleClickLink(item)}
+                        className='relative flex h-20 items-center'
+                        onClick={() => handleClickLink(menuItem.to)}
+                        onMouseOver={() => setHoveredMenu(menuItem.label)}
+                        onMouseLeave={() => setHoveredMenu('')}
                         key={ind}
                       >
-                        <span className='cursor-pointer'>{item.name}</span>
+                        <span className='cursor-pointer'>{menuItem.label}</span>
+                        <ul
+                          className={cx(
+                            'trans absolute bottom-0 w-fit translate-y-full divide-y divide-gray-500 bg-gray-800 shadow',
+                            menuItem.submenu && hoveredMenu === menuItem.label
+                              ? 'pointer-events-auto opacity-100'
+                              : 'pointer-event-none opacity-0',
+                          )}
+                        >
+                          {menuItem.submenu?.map((submenu) => (
+                            <li className='group relative' key={submenu.label}>
+                              <div className='cursor-pointer whitespace-nowrap px-4 py-2 hover:bg-gray-900 hover:bg-opacity-80'>
+                                {submenu.label}
+                              </div>
+                              <ul className='trans pointer-events-none absolute right-0 top-0 translate-x-full divide-y divide-gray-500 bg-gray-800 opacity-0 group-hover:pointer-events-auto group-hover:opacity-100'>
+                                {submenu.submenu?.map((subSubmenu) => (
+                                  <li key={subSubmenu.label}>
+                                    <div className='cursor-pointer whitespace-nowrap px-4 py-2 hover:bg-gray-900 hover:bg-opacity-80'>
+                                      {subSubmenu.label}
+                                    </div>
+                                  </li>
+                                ))}
+                              </ul>
+                            </li>
+                          ))}
+                        </ul>
                       </li>
                     ),
-                )}
-                {isLoggedIn && (
-                  <li className='group relative flex h-20 items-center justify-center'>
-                    <span className='cursor-pointer hover:opacity-80'>Create</span>
-                    <ul className='trans pointer-events-none absolute bottom-0 left-0 flex w-48 translate-y-full flex-col space-y-2 rounded bg-gray-800 p-4 opacity-0 shadow group-hover:pointer-events-auto group-hover:opacity-100'>
-                      <li>
-                        <span className='text-gray-500'>Building</span>
-                        <ul className={classNames.submenu}>
-                          <li>
-                            <span className={classNames.submenuItem}>Condo</span>
-                          </li>
-                        </ul>
-                      </li>
-                      <li>
-                        <span className='text-gray-500'>Condo</span>
-                        <ul className={classNames.submenu}>
-                          <li>
-                            <span className={classNames.submenuItem}>Apartment</span>
-                          </li>
-                        </ul>
-                      </li>
-                      <li>
-                        <span className='text-gray-500'>Land</span>
-                        <ul className={classNames.submenu}>
-                          <span className={classNames.submenuItem}>Official House</span>
-                        </ul>
-                      </li>
-                      <li>
-                        <span className={classNames.submenuItem}>Mall</span>
-                      </li>
-                      <li>
-                        <span className={classNames.submenuItem}>Company Warehouse</span>
-                      </li>
-                      <li>
-                        <span className='text-gray-500'>Business</span>
-                        <ul className={classNames.submenu}>
-                          <span className={classNames.submenuItem}>Shop</span>
-                        </ul>
-                      </li>
-                      <li>
-                        <span className='text-gray-500'>Personal Assets</span>
-                        <ul className={classNames.submenu}>
-                          <li>
-                            <span className={classNames.submenuItem}>
-                              <Link to='/create/yacht'>Yacht</Link>
-                            </span>
-                          </li>
-                          <li>
-                            <span className={classNames.submenuItem}>Car</span>
-                          </li>
-                        </ul>
-                      </li>
-                    </ul>
-                  </li>
                 )}
               </ul>
             </nav>

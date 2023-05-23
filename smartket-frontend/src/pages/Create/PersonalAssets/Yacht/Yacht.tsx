@@ -7,7 +7,7 @@ import InputForm from 'components/Form/Input'
 
 import { myClassName } from 'components/Form/Input'
 import countries from 'constants/country'
-import { conditions, engineTypes } from 'constants/index'
+import { conditions, engineTypes } from 'constants/yacht'
 import { useAppDispatch } from 'app/hooks'
 import { setLoadingModalOpen } from 'slices/modal'
 import { createYacht } from 'slices/user'

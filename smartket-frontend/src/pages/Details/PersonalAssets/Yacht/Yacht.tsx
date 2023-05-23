@@ -19,7 +19,7 @@ import {
   apiRemoveYacht,
   apiSellYacht,
 } from 'utils/yacht'
-import { YachtStatus, StatusColor } from 'constants/index'
+import { YachtStatus, StatusColor } from 'constants/yacht'
 
 const classNames = {
   propertyDiv: 'flex items-end space-x-4',

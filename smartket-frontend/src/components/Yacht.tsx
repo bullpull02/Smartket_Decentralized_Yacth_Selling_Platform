@@ -1,4 +1,4 @@
-import { StatusColor } from 'constants/index'
+import { StatusColor } from 'constants/yacht'
 import { cx } from 'utils'
 
 interface YachtProps {

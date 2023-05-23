@@ -6,7 +6,7 @@ import Yacht from 'components/Yacht'
 import { useAppSelector } from 'app/hooks'
 import { RootState } from 'app/store'
 
-const MyNFTs = () => {
+const MyAssets = () => {
   const navigate = useNavigate()
   const yachts = useAppSelector((state: RootState) => state.user.yachts)
 
@@ -23,4 +23,4 @@ const MyNFTs = () => {
   )
 }
 
-export default MyNFTs
+export default MyAssets

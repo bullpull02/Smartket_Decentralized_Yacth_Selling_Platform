@@ -47,10 +47,10 @@ const ProfileMenu = () => {
             : 'pointer-events-none bottom-0 opacity-0',
         )}
       >
-        <li className={classNames.li} onClick={() => navigate('/my-profile')}>
-          My Profile
+        <li className={classNames.li} onClick={() => navigate('/profile')}>
+          Profile
         </li>
-        <li className={classNames.li} onClick={() => navigate('/my-nfts')}>
+        <li className={classNames.li} onClick={() => navigate('/my-assets')}>
           My NFTs
         </li>
         <li className={classNames.li} onClick={handleLogout}>
