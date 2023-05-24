@@ -22,6 +22,7 @@ const Header = () => {
   const dispatch = useAppDispatch()
 
   const handleClickLink = (to: string): void => {
+    setHoveredMenu('')
     if (to !== '') {
       navigate(to)
     } else if (to === '') {
@@ -59,7 +60,7 @@ const Header = () => {
   return (
     <header className='relative z-[1000] shadow backdrop-blur'>
       <div className='container'>
-        <div className='flex h-20 items-center justify-between'>
+        <div className='flex h-16 items-center justify-between'>
           <Link to='/'>
             <img src='/images/logo.png' alt='' className='h-14 -translate-x-4' />
           </Link>
@@ -70,30 +71,40 @@ const Header = () => {
                   (menuItem, ind) =>
                     (menuItem.auth === isLoggedIn || menuItem.auth === undefined) && (
                       <li
-                        className='relative flex h-20 items-center'
-                        onClick={() => handleClickLink(menuItem.to)}
-                        onMouseOver={() => setHoveredMenu(menuItem.label)}
+                        className='relative flex h-16 items-center'
                         onMouseLeave={() => setHoveredMenu('')}
                         key={ind}
                       >
-                        <span className='cursor-pointer'>{menuItem.label}</span>
+                        <span
+                          className='cursor-pointer hover:opacity-80'
+                          onMouseOver={() => setHoveredMenu(menuItem.label)}
+                          onClick={() => handleClickLink(menuItem.to)}
+                        >
+                          {menuItem.label}
+                        </span>
                         <ul
                           className={cx(
-                            'trans absolute bottom-0 w-fit translate-y-full divide-y divide-gray-500 bg-gray-800 shadow',
+                            'trans absolute bottom-0 left-0 w-fit translate-y-full divide-y divide-gray-500 divide-opacity-20 border border-gray-800 bg-gray-800 shadow',
                             menuItem.submenu && hoveredMenu === menuItem.label
                               ? 'pointer-events-auto opacity-100'
-                              : 'pointer-event-none opacity-0',
+                              : 'pointer-events-none opacity-0',
                           )}
                         >
                           {menuItem.submenu?.map((submenu) => (
                             <li className='group relative' key={submenu.label}>
-                              <div className='cursor-pointer whitespace-nowrap px-4 py-2 hover:bg-gray-900 hover:bg-opacity-80'>
+                              <div
+                                className='cursor-pointer whitespace-nowrap px-3 py-2 text-sm hover:bg-gray-900 hover:bg-opacity-80'
+                                onClick={() => handleClickLink(submenu.to)}
+                              >
                                 {submenu.label}
                               </div>
-                              <ul className='trans pointer-events-none absolute right-0 top-0 translate-x-full divide-y divide-gray-500 bg-gray-800 opacity-0 group-hover:pointer-events-auto group-hover:opacity-100'>
+                              <ul className='trans pointer-events-none absolute right-0 top-0 translate-x-full divide-y divide-gray-500 divide-opacity-20 bg-gray-800 opacity-0 group-hover:pointer-events-auto group-hover:opacity-100'>
                                 {submenu.submenu?.map((subSubmenu) => (
                                   <li key={subSubmenu.label}>
-                                    <div className='cursor-pointer whitespace-nowrap px-4 py-2 hover:bg-gray-900 hover:bg-opacity-80'>
+                                    <div
+                                      className='cursor-pointer whitespace-nowrap px-3 py-2 text-sm shadow hover:bg-gray-900 hover:bg-opacity-80'
+                                      onClick={() => handleClickLink(subSubmenu.to)}
+                                    >
                                       {subSubmenu.label}
                                     </div>
                                   </li>

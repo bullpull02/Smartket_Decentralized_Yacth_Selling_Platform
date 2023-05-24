@@ -23,6 +23,7 @@ const { default: Marketplace } = lazyImport(
 )
 const { default: MyAssets } = lazyImport(async () => await import('pages/MyAssets'), 'default')
 const { default: Profile } = lazyImport(async () => await import('pages/Profile'), 'default')
+const { default: ComingSoon } = lazyImport(async () => await import('pages/ComingSoon'), 'default')
 
 const { default: ShopManagement } = lazyImport(
   async () => await import('pages/Admin/Management/Assets/Business/Shop'),
@@ -36,8 +37,20 @@ const { default: YachtManagement } = lazyImport(
 export const publicRoutes = [
   { path: '/', element: <Marketplace /> },
   { path: '/register', element: <Register /> },
-  { path: '/create/personal-assets/yacht', element: <CreateYacht /> },
+  { path: '/create', element: <ComingSoon /> },
+  { path: '/create/building', element: <ComingSoon /> },
+  { path: '/create/building/condo', element: <ComingSoon /> },
+  { path: '/create/condo', element: <ComingSoon /> },
+  { path: '/create/condo/apartment', element: <ComingSoon /> },
+  { path: '/create/land', element: <ComingSoon /> },
+  { path: '/create/land/official-space', element: <ComingSoon /> },
+  { path: '/create/mall', element: <ComingSoon /> },
+  { path: '/create/company-warehouse', element: <ComingSoon /> },
+  { path: '/create/business', element: <ComingSoon /> },
   { path: '/create/business/shop', element: <CreateShop /> },
+  { path: '/create/personal-assets', element: <ComingSoon /> },
+  { path: '/create/personal-assets/yacht', element: <CreateYacht /> },
+  { path: '/create/personal-assets/car', element: <ComingSoon /> },
   { path: '/details/shop/:id', Element: <ShopDetail /> },
   { path: '/details/yacht/:id', element: <YachtDetail /> },
   { path: '/marketplace', element: <Marketplace /> },

@@ -10,14 +10,17 @@ export const menu = [
       {
         label: 'Building',
         to: '/create/building',
+        submenu: [{ label: 'Condo', to: '/create/building/condo' }],
       },
       {
         label: 'Condo',
         to: '/create/condo',
+        submenu: [{ label: 'Apartment', to: '/create/condo/apartment' }],
       },
       {
         label: 'Land',
         to: '/create/land',
+        submenu: [{ label: 'Official Space', to: '/create/land/official-space' }],
       },
       {
         label: 'Mall',
