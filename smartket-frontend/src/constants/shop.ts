@@ -1,11 +1,9 @@
 export const tabs = [
-  'Costs',
   'Listing',
   'Documents',
   'Photos',
   'Property',
   'Secure Information',
-  'Financial',
   'Highlights',
   'Contacts',
 ]
@@ -26,3 +24,48 @@ export enum SaleConditions {
   REO_SALE = 'REO Sale',
   SHORT_SALE = 'Short Sale',
 }
+
+export const saleConditions = [
+  'Sale Leaseback',
+  'Build to Suit',
+  'Building in Shell Condition',
+  '1031 Exchange',
+  'Ground Lease (Leased Fee)',
+  'Bulk/Portfolio Sale',
+  'Deferred Maintenance',
+  'Distress Sale',
+  'Groud Kease (Leasehold)',
+  'High Vacancy Property',
+  'Lease Option',
+  'Redevelopment Project',
+  'REO Sale',
+  'Short Sale',
+]
+
+export enum SecureInformation {
+  PUBLIC = 'Public',
+  REGISTRATION = 'Registration',
+  CONFIDENTIALITY_AGREEMENT = 'Confidentiality Agreement',
+  APPROVAL_REQUIRED = 'Approval Required',
+}
+
+export const secureInformation: Record<string, any>[] = [
+  {
+    title: 'Public',
+    description:
+      'Choosing ‘Public’ gives all Users access to the information entered within the Secure Information section for this listing and does not generate Secure Leads.',
+  },
+  {
+    title: 'Registration',
+    description:
+      'Users must register their contact information . User contact information will be shared as a lead.',
+  },
+  {
+    title: 'Confidentiality Agreement',
+    description: 'Users must also sign the CoStar standard electronic confidentiality agreement.',
+  },
+  {
+    title: 'Approval Required',
+    description: 'Listing contacts must approve each confidentiality agreement.',
+  },
+]

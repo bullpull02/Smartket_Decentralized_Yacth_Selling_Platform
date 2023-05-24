@@ -1,10 +1,12 @@
-import { Suspense } from 'react'
+import { Suspense, useMemo } from 'react'
 import { createClient, configureChains, mainnet, WagmiConfig } from 'wagmi'
 import { alchemyProvider } from 'wagmi/providers/alchemy'
 import { publicProvider } from 'wagmi/providers/public'
 import { CoinbaseWalletConnector } from 'wagmi/connectors/coinbaseWallet'
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask'
 import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
+import { createTheme, ThemeProvider } from '@mui/material/styles'
+import { CssBaseline } from '@mui/material'
 import { Toaster } from 'react-hot-toast'
 
 import AppRoutes from 'routes'
@@ -38,18 +40,50 @@ const client = createClient({
 })
 
 const App = () => {
+  const theme = useMemo(
+    () =>
+      createTheme({
+        palette: { mode: 'dark', primary: { main: '#3b82f6' } },
+        typography: {
+          fontFamily: 'Urbanist, sans-serif',
+        },
+        components: {
+          MuiButton: {
+            styleOverrides: {
+              root: {
+                fontFamily: 'Urbanist, sans-serif',
+                fontSize: 16,
+                textTransform: 'none',
+              },
+            },
+          },
+          MuiTooltip: {
+            styleOverrides: {
+              tooltip: {
+                fontSize: 12,
+              },
+            },
+          },
+        },
+      }),
+    [],
+  )
+
   return (
     <>
       <WagmiConfig client={client}>
-        <Suspense
-          fallback={
-            <div className='fixed inset-0 flex items-center justify-center backdrop-blur'>
-              <PropagateLoader color='#3b82f6' />
-            </div>
-          }
-        >
-          <AppRoutes />
-        </Suspense>
+        <ThemeProvider theme={theme}>
+          <Suspense
+            fallback={
+              <div className='fixed inset-0 flex items-center justify-center backdrop-blur'>
+                <PropagateLoader color='#3b82f6' />
+              </div>
+            }
+          >
+            <AppRoutes />
+          </Suspense>
+          <CssBaseline />
+        </ThemeProvider>
         <Modal />
         <Toaster position='top-right' reverseOrder={false} />
       </WagmiConfig>

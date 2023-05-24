@@ -1,3 +1,5 @@
+import Button from '@mui/material/Button'
+
 import { cx } from 'utils'
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -5,12 +7,14 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   className?: string
 }
 
-const Button: React.FC<ButtonProps> = ({ children, className = '', ...props }) => {
+const MButton: React.FC<ButtonProps> = ({ children, className = '', ...props }) => {
   return (
-    <button className={cx(className, 'px-4 py-2 shadow')} {...props}>
+    <Button
+      className={cx(className, 'trans rounded bg-blue-500 px-4 py-2 shadow hover:shadow-none')}
+    >
       {children}
-    </button>
+    </Button>
   )
 }
 
-export default Button
+export default MButton
