@@ -35,8 +35,8 @@ const Documents: React.FC<StepComponentProps> = ({ documents, setDocuments }) =>
         <input type='file' multiple ref={ref} className='hidden' onChange={handleUploadDocuments} />
       </div>
       <div className='space-y-2'>
-        {documents.map((document) => (
-          <div className='flex items-center space-x-4'>
+        {documents.map((document, ind) => (
+          <div className='flex items-center space-x-4' key={ind}>
             <CloseIcon
               className='cursor-pointer hover:text-red-500'
               onClick={() => handleDeleteDocument(document)}

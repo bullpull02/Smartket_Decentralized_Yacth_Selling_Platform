@@ -27,8 +27,8 @@ const Photos: React.FC<StepComponentProps> = ({ photos, setPhotos }) => {
   return (
     <div className='space-y-4'>
       <div className='grid grid-cols-6 gap-4'>
-        {photos.map((photo) => (
-          <div className='group relative aspect-square overflow-hidden rounded'>
+        {photos.map((photo, ind) => (
+          <div className='group relative aspect-square overflow-hidden rounded' key={ind}>
             <LazyLoadImage
               src={URL.createObjectURL(photo)}
               effect='blur'

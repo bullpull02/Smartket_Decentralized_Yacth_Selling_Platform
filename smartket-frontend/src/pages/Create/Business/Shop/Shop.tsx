@@ -10,7 +10,10 @@ import { tabs } from 'constants/shop'
 
 const Shop = () => {
   const [tabValue, setTabValue] = useState<number>(0)
-  const [shopInfo, setShopInfo] = useState<Record<any, any>>({})
+  const [shopInfo, setShopInfo] = useState<Record<any, any>>({
+    landAreaUnit: 'AC',
+    highlights: [''],
+  })
   const [photos, setPhotos] = useState<File[]>([])
   const [documents, setDocuments] = useState<File[]>([])
 

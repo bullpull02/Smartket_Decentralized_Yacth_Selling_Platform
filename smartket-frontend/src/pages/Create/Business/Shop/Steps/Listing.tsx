@@ -5,12 +5,63 @@ import InfoIcon from '@mui/icons-material/Info'
 import Autocomplete from '@mui/material/Autocomplete'
 
 import { saleConditions } from 'constants/shop'
+import states from 'constants/states'
 import type { StepComponentProps } from '../types'
 
 const Listing: React.FC<StepComponentProps> = ({ shopInfo, setShopInfo }) => {
   return (
     <div className='space-y-4'>
       <div className='grid grid-cols-4 gap-4'>
+        <TextField
+          label='Street'
+          size='small'
+          defaultValue={shopInfo.street}
+          required
+          InputLabelProps={{
+            shrink: true,
+          }}
+          className='col-span-4'
+          onChange={(e) => setShopInfo((prev: any) => ({ ...prev, street: e.target.value }))}
+        />
+        <TextField
+          label='City'
+          size='small'
+          defaultValue={shopInfo.city}
+          required
+          InputLabelProps={{ shrink: true }}
+          onChange={(e) => setShopInfo((prev: any) => ({ ...prev, city: e.target.value }))}
+        />
+        <Autocomplete
+          options={states.map((state) => state.name)}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label='State'
+              size='small'
+              placeholder='Please select'
+              required
+              InputLabelProps={{ shrink: true }}
+            />
+          )}
+          value={shopInfo.state || ''}
+          onChange={(_, newValue) => setShopInfo((prev: any) => ({ ...prev, state: newValue }))}
+        />
+        <TextField
+          label='Zip Code'
+          size='small'
+          defaultValue={shopInfo.zipCode}
+          required
+          InputLabelProps={{ shrink: true }}
+          onChange={(e) => setShopInfo((prev: any) => ({ ...prev, zipCode: e.target.value }))}
+        />
+        <TextField
+          label='Phone'
+          size='small'
+          defaultValue={shopInfo.phone}
+          required
+          InputLabelProps={{ shrink: true }}
+          onChange={(e) => setShopInfo((prev: any) => ({ ...prev, phone: e.target.value }))}
+        />
         <TextField label='Sale Type' size='small' value='Investment' disabled />
         <TextField
           type='number'
@@ -110,7 +161,7 @@ const Listing: React.FC<StepComponentProps> = ({ shopInfo, setShopInfo }) => {
         className='w-full'
         defaultValue={shopInfo.saleNotes}
         placeholder='e.g. Prime investment opportunity. This triple-net leased retail showroom...'
-        rows={6}
+        rows={5}
         InputLabelProps={{ shrink: true }}
         onChange={(e) => setShopInfo((prev: any) => ({ ...prev, saleNotes: e.target.value }))}
       />

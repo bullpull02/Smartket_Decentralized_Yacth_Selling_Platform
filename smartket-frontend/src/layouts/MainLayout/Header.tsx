@@ -58,7 +58,7 @@ const Header = () => {
   }
 
   return (
-    <header className='relative z-[1000] shadow backdrop-blur'>
+    <header className='sticky top-0 z-[1000] shadow backdrop-blur'>
       <div className='container'>
         <div className='flex h-16 items-center justify-between'>
           <Link to='/'>

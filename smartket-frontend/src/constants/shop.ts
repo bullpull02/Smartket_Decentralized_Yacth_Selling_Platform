@@ -2,7 +2,7 @@ export const tabs = [
   'Listing',
   'Documents',
   'Photos',
-  'Property',
+  'Properties',
   'Secure Information',
   'Highlights',
   'Contacts',
@@ -41,6 +41,16 @@ export const saleConditions = [
   'REO Sale',
   'Short Sale',
 ]
+
+export const buildingStatus = ['New', 'Existing', 'Under Renovation']
+
+export const constructionType = ['Masonry', 'Metal', 'Reinforced Concrete', 'Steel', 'Wood Frame']
+
+export const tenancy = ['Multi', 'Single']
+
+export const classes = ['A', 'B', 'C']
+
+export const sprinklers = ['Dry', 'ESFR', 'Wet']
 
 export enum SecureInformation {
   PUBLIC = 'Public',
