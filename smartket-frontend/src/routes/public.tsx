@@ -55,7 +55,7 @@ export const publicRoutes = [
   { path: '/details/yacht/:id', element: <YachtDetail /> },
   { path: '/marketplace', element: <Marketplace /> },
   { path: '/my-assets', element: <MyAssets /> },
-  { path: './profile', element: <Profile /> },
+  { path: '/profile', element: <Profile /> },
   { path: '/admin/management/assets/business/shop', element: <ShopManagement /> },
   { path: '/admin/management/assets/personal-assets/yacht', element: <YachtManagement /> },
 ]

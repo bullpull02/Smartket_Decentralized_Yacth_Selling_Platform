@@ -1,3 +1,4 @@
+import Button from '@mui/material/Button'
 import { useAccount, useDisconnect } from 'wagmi'
 
 import { useAppDispatch } from 'app/hooks'
@@ -20,9 +21,9 @@ const WalletConnectButton = () => {
   }
 
   return (
-    <button className='rounded bg-blue-500 px-4 py-2 shadow' onClick={handleClick}>
+    <Button variant='contained' className='!shadow-none' onClick={handleClick}>
       {isConnected ? shortenAddress(address) : 'Connect Wallet'}
-    </button>
+    </Button>
   )
 }
 

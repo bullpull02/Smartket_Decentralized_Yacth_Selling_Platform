@@ -43,7 +43,7 @@ const App = () => {
   const theme = useMemo(
     () =>
       createTheme({
-        palette: { mode: 'dark', primary: { main: '#3b82f6' } },
+        palette: { mode: 'dark', primary: { main: '#3b82f6' }, background: { default: '#181818' } },
         typography: {
           fontFamily: 'Urbanist, sans-serif',
         },
