@@ -4,8 +4,7 @@ import Photos from './Photos'
 import Properties from './Properties'
 import SecureInformation from './SecureInformation'
 import Highlights from './Highlights'
-import Contacts from './Contacts'
 
-const Steps = [Listing, Documents, Photos, Properties, SecureInformation, Highlights, Contacts]
+const Steps = [Listing, Documents, Photos, Properties, SecureInformation, Highlights]
 
 export default Steps

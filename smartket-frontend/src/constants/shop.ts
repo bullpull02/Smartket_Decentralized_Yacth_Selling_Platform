@@ -5,7 +5,6 @@ export const tabs = [
   'Properties',
   'Secure Information',
   'Highlights',
-  'Contacts',
 ]
 
 export enum SaleConditions {
