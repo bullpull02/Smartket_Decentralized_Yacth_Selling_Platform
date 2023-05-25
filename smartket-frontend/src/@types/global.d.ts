@@ -1,3 +1,5 @@
+declare module 'react-lazy-load-image-component'
+
 interface Register {
   walletAddress: string
   firstName: string

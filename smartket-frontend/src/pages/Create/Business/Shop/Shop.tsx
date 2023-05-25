@@ -11,10 +11,12 @@ import { tabs } from 'constants/shop'
 const Shop = () => {
   const [tabValue, setTabValue] = useState<number>(0)
   const [shopInfo, setShopInfo] = useState<Record<any, any>>({})
+  const [photos, setPhotos] = useState<File[]>([])
+  const [documents, setDocuments] = useState<File[]>([])
 
   useEffect(() => {
-    console.log(shopInfo)
-  }, [shopInfo])
+    console.log(shopInfo, photos, documents)
+  }, [shopInfo, photos, documents])
 
   const StepComponent = useMemo(() => Steps[tabValue], [tabValue])
 
@@ -44,8 +46,15 @@ const Shop = () => {
               ))}
             </Tabs>
           </div>
-          <div className='min-h-[320px]'>
-            <StepComponent shopInfo={shopInfo} setShopInfo={setShopInfo} />
+          <div className='min-h-[360px]'>
+            <StepComponent
+              shopInfo={shopInfo}
+              setShopInfo={setShopInfo}
+              photos={photos}
+              setPhotos={setPhotos}
+              documents={documents}
+              setDocuments={setDocuments}
+            />
           </div>
           <div className='flex justify-between gap-4'>
             <div className='flex gap-4'>

@@ -24,3 +24,7 @@ input[type='number']::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
+
+.lazy-load-image-loaded.blur {
+  filter: none;
+}
