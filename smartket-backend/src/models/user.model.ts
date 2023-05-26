@@ -11,16 +11,6 @@ export enum UserRoles {
 	timestamps: true,
 })
 class User extends Model<User> {
-	@HasMany(() => Yacht)
-	yachts: Yacht[]
-
-	@Column({
-		type: DataType.STRING,
-		allowNull: false,
-		unique: true,
-	})
-	walletAddress: string
-
 	@Column({
 		type: DataType.ENUM('admin', 'user'),
 		allowNull: false,
@@ -31,8 +21,9 @@ class User extends Model<User> {
 	@Column({
 		type: DataType.STRING,
 		allowNull: false,
+		unique: true,
 	})
-	email: string
+	walletAddress: string
 
 	@Column({
 		type: DataType.STRING,
@@ -56,37 +47,55 @@ class User extends Model<User> {
 		type: DataType.STRING,
 		allowNull: false,
 	})
+	email: string
+
+	@Column({
+		type: DataType.STRING,
+		allowNull: false,
+	})
 	phone: string
 
 	@Column({
 		type: DataType.STRING,
-		allowNull: true,
+		allowNull: false,
 	})
 	street: string
 
 	@Column({
 		type: DataType.STRING,
-		allowNull: true,
+		allowNull: false,
 	})
 	city: string
 
 	@Column({
 		type: DataType.STRING,
-		allowNull: true,
+		allowNull: false,
 	})
 	state: string
 
 	@Column({
 		type: DataType.STRING,
-		allowNull: true,
+		allowNull: false,
 	})
-	zipcode: string
+	zipCode: string
 
 	@Column({
 		type: DataType.STRING,
 		allowNull: true,
 	})
-	country: string
+	twitter: string
+
+	@Column({
+		type: DataType.STRING,
+		allowNull: true,
+	})
+	facebook: string
+
+	@Column({
+		type: DataType.STRING,
+		allowNull: true,
+	})
+	linkedin: string
 
 	@Column({
 		type: DataType.BOOLEAN,
@@ -94,6 +103,9 @@ class User extends Model<User> {
 		defaultValue: false,
 	})
 	isBanned: boolean
+
+	@HasMany(() => Yacht)
+	yachts: Yacht[]
 
 	static findByEmail(email: string) {
 		return User.findOne({ where: { email } })

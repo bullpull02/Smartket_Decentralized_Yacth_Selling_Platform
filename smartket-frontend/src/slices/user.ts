@@ -24,7 +24,7 @@ export const login = createAsyncThunk('user/login', async () => {
   }
 })
 
-export const createUser = createAsyncThunk('user/create', async (params: Register) => {
+export const createUser = createAsyncThunk('user/create', async (params: any) => {
   try {
     const data = await apiCreateUser(params)
     return data
@@ -35,7 +35,7 @@ export const createUser = createAsyncThunk('user/create', async (params: Registe
 
 export const updateUser = createAsyncThunk(
   'user/update',
-  async ({ id, params }: { id: number; params: Register }) => {
+  async ({ id, params }: { id: number; params: any }) => {
     try {
       const data = await apiUpdateUser(id, params)
       return data

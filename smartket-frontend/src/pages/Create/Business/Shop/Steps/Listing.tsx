@@ -47,7 +47,7 @@ const Listing: React.FC<StepComponentProps> = ({ shopInfo, setShopInfo }) => {
           onChange={(_, newValue) => setShopInfo((prev: any) => ({ ...prev, state: newValue }))}
         />
         <TextField
-          label='Zip Code'
+          label='ZipCode'
           size='small'
           defaultValue={shopInfo.zipCode}
           required

@@ -32,7 +32,7 @@ const ProfileMenu = () => {
   return (
     <div className='relative' ref={ref}>
       <img
-        src={user.avatar || '/images/profile.png'}
+        src={`https://gateway.pinata.cloud/ipfs/${user.avatar}`}
         alt=''
         width={40}
         height={40}

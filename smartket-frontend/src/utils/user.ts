@@ -9,7 +9,7 @@ export const apiLogin = async (): Promise<any> => {
   }
 }
 
-export const apiCreateUser = async (params: Register): Promise<any> => {
+export const apiCreateUser = async (params: any): Promise<any> => {
   try {
     const { data } = await axios.post('/user', params)
     return data
@@ -18,7 +18,7 @@ export const apiCreateUser = async (params: Register): Promise<any> => {
   }
 }
 
-export const apiUpdateUser = async (id: number, params: Register): Promise<any> => {
+export const apiUpdateUser = async (id: number, params: any): Promise<any> => {
   try {
     const { data } = await axios.put('/user/:id', params)
     return data

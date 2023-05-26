@@ -57,7 +57,7 @@ const Register = () => {
       if (!payload.success) {
         toast.error(payload.message)
       } else {
-        toast.success('Successfully submitted your profile')
+        toast.success('Successfully created your profile')
         navigate('/profile')
       }
     } catch (_) {
@@ -151,7 +151,7 @@ const Register = () => {
                       )}
                     </Field>
                     <Field name='zipCode' validate={(value) => validate('zipCode', value)}>
-                      {(props) => <MTextField label='Zip Code' placeholder='Zip Code' {...props} />}
+                      {(props) => <MTextField label='ZipCode' placeholder='ZipCode' {...props} />}
                     </Field>
                   </div>
                 </div>
