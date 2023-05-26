@@ -20,9 +20,10 @@ export const signMiddleware = async (req: Request, res: Response, next: NextFunc
 
 		req.body.walletAddress = walletAddress
 
-		const userId = (await User.findByWalletAddress(walletAddress))?.id
+		const user = await User.findByWalletAddress(walletAddress)
 
-		req.body.userId = userId
+		req.body.userId = user?.id
+		req.body.role = user?.role
 
 		next()
 	} catch (err) {

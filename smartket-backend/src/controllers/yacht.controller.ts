@@ -77,11 +77,10 @@ export default class YachtController {
 	accept = async (req: Request, res: Response) => {
 		try {
 			const { id } = req.params
-			const { userId } = req.body
 
 			await Yacht.update(
 				{ status: YachtStatus.ACCEPTED },
-				{ where: { id, owner: userId, status: YachtStatus.PENDING } }
+				{ where: { id, status: YachtStatus.PENDING } }
 			)
 
 			const yachts = await Yacht.findAll({ include: [{ model: User }] })

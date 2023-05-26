@@ -43,6 +43,7 @@ const Header = () => {
       const signature = await signMessageAsync()
 
       localStorage.setItem('signature', signature)
+      address && localStorage.setItem('walletAddress', address)
 
       const { payload } = await dispatch(login())
 
