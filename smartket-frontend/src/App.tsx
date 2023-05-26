@@ -45,14 +45,14 @@ const App = () => {
       createTheme({
         palette: { mode: 'dark', primary: { main: '#3b82f6' }, background: { default: '#181818' } },
         typography: {
-          fontFamily: 'Urbanist, sans-serif',
+          fontFamily: 'Poppins, sans-serif',
         },
         components: {
           MuiButton: {
             styleOverrides: {
               root: {
-                fontFamily: 'Urbanist, sans-serif',
-                fontSize: 16,
+                fontFamily: 'Poppins, sans-serif',
+                fontSize: 14,
                 textTransform: 'none',
               },
             },
