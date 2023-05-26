@@ -3,7 +3,6 @@ import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-hot-toast'
 import { useAccount, useSignMessage } from 'wagmi'
 import AppBar from '@mui/material/AppBar'
-import Toolbar from '@mui/material/Toolbar'
 
 import WalletConnectButton from 'components/Button/WalletConnect'
 import ProfileMenu from 'components/ProfileMenu'
