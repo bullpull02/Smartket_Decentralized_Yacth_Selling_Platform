@@ -21,7 +21,7 @@ const validate = (type: string, value: any) => {
         ? undefined
         : 'Invalid phone number'
     case 'street':
-      return /^[a-zA-Z0-9\s\.,#-]+$/.test(value) ? undefined : 'Invalid street'
+      return /^[a-zA-Z0-9\s\.,#-]+$/.test(value) ? undefined : 'Invalid street' //eslint-disable-line
     case 'walletAddress':
       return value.length === 42 ? undefined : 'Invalid wallet address'
     case 'zipCode':
