@@ -89,7 +89,7 @@ const Header = () => {
                         </span>
                         <ul
                           className={cx(
-                            'trans absolute bottom-0 left-0 w-fit translate-y-full divide-y divide-gray-500 divide-opacity-20 border border-gray-800 bg-gray-800 shadow',
+                            'trans absolute bottom-0 left-0 w-fit translate-y-full divide-y divide-gray-200 divide-opacity-20 border border-[#363636] bg-[#363636] shadow',
                             menuItem.submenu && hoveredMenu === menuItem.label
                               ? 'pointer-events-auto opacity-100'
                               : 'pointer-events-none opacity-0',
@@ -98,16 +98,16 @@ const Header = () => {
                           {menuItem.submenu?.map((submenu) => (
                             <li className='group relative' key={submenu.label}>
                               <div
-                                className='cursor-pointer whitespace-nowrap px-3 py-2 text-sm hover:bg-gray-900 hover:bg-opacity-80'
+                                className='cursor-pointer whitespace-nowrap px-3 py-2 text-sm hover:bg-[#484848] hover:bg-opacity-80'
                                 onClick={() => handleClickLink(submenu.to)}
                               >
                                 {submenu.label}
                               </div>
-                              <ul className='trans pointer-events-none absolute right-0 top-0 translate-x-full divide-y divide-gray-500 divide-opacity-20 bg-gray-800 opacity-0 group-hover:pointer-events-auto group-hover:opacity-100'>
+                              <ul className='trans pointer-events-none absolute right-0 top-0 translate-x-full divide-y divide-gray-500 divide-opacity-20 bg-[#303030] opacity-0 group-hover:pointer-events-auto group-hover:opacity-100'>
                                 {submenu.submenu?.map((subSubmenu) => (
                                   <li key={subSubmenu.label}>
                                     <div
-                                      className='cursor-pointer whitespace-nowrap px-3 py-2 text-sm shadow hover:bg-gray-900 hover:bg-opacity-80'
+                                      className='cursor-pointer whitespace-nowrap px-3 py-2 text-sm shadow hover:bg-[#404040] hover:bg-opacity-80'
                                       onClick={() => handleClickLink(subSubmenu.to)}
                                     >
                                       {subSubmenu.label}
