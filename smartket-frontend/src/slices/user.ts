@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
+import { apiCreateShop } from 'utils/shop'
 import { apiLogin, apiCreateUser, apiUpdateUser, apiDeleteUser } from 'utils/user'
 import { apiCreateYacht } from 'utils/yacht'
 
@@ -63,6 +64,15 @@ export const createYacht = createAsyncThunk('user/createYacht', async (params: a
   }
 })
 
+export const createShop = createAsyncThunk('user/createShop', async (params: any) => {
+  try {
+    const data = await apiCreateShop(params)
+    return data
+  } catch (err) {
+    throw err
+  }
+})
+
 const userSlice = createSlice({
   name: 'user',
   initialState,
@@ -96,6 +106,8 @@ const userSlice = createSlice({
         state.yachts = [...action.payload.data.yachts]
       }
     })
+    builder.addCase(createShop.fulfilled, (state, action) => {})
+    builder.addCase(createShop.rejected, (state, action) => {})
   },
 })
 

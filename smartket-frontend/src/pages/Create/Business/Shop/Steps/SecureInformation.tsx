@@ -16,7 +16,11 @@ const SecureInformationStep: React.FC<StepComponentProps> = ({ shopInfo, setShop
               : 'divide-gray-500 border-gray-500',
           )}
           onClick={() =>
-            setShopInfo((prev: any) => ({ ...prev, secureInformation: information.title }))
+            setShopInfo((prev: any) => ({
+              ...prev,
+              secureInformation:
+                prev.secureInformation === information.title ? null : information.title,
+            }))
           }
           key={ind}
         >

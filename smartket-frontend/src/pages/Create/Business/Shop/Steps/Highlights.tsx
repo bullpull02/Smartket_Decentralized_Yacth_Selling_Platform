@@ -32,7 +32,7 @@ const Highlights: React.FC<StepComponentProps> = ({ shopInfo, setShopInfo }) => 
       <h4 className='text-gray-300'>Describe the most appealing features of the property</h4>
       <div className='space-y-2'>
         {shopInfo.highlights.map((highlight: string, ind: number) => (
-          <div className='flex items-center space-x-2'>
+          <div className='flex items-center space-x-2' key={ind}>
             <TextField
               size='small'
               fullWidth
