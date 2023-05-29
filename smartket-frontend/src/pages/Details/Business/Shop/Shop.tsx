@@ -69,7 +69,7 @@ const ShopDetail = () => {
     if (!shop.offeredBy || !id) return
     ;(async () => {
       try {
-        const data = await apiGetUser(+id)
+        const data = await apiGetUser(+shop.offeredBy)
 
         if (data.success) {
           setOfferer(data.data.user)
@@ -176,6 +176,7 @@ const ShopDetail = () => {
       toast.error('Network error')
     } finally {
       dispatch(setLoadingModalOpen(false))
+      setTabValue(0)
     }
   }
 
@@ -196,6 +197,7 @@ const ShopDetail = () => {
       toast.error('Network error')
     } finally {
       dispatch(setLoadingModalOpen(false))
+      setTabValue(0)
     }
   }
 
@@ -294,7 +296,7 @@ const ShopDetail = () => {
                       </div>
                     </div>
                   )}
-                  {tabValue === 1 ? (
+                  {tabValue === 1 && shop.status === ShopStatus.OFFERED ? (
                     offererLoading ? (
                       <Loading />
                     ) : (

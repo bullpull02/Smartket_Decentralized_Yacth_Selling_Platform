@@ -32,7 +32,7 @@ export default class UserController {
 	findById = async (req: Request, res: Response) => {
 		try {
 			const { id } = req.params
-			const user = await User.findByPk(id)
+			const user = await User.findOne({ where: { id } })
 
 			return res.json({ status: 200, success: true, data: { user } })
 		} catch (err) {
