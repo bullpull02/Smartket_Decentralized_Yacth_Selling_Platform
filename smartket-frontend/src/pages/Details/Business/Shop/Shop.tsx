@@ -26,7 +26,7 @@ import {
   apiOfferShop,
   apiSellShop,
   apiDeclineShop,
-  apiRemoveShop,
+  // apiRemoveShop,
 } from 'utils/shop'
 import { apiGetUser } from 'utils/user'
 import { StatusColor } from 'config'
