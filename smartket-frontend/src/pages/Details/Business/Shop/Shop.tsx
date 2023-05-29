@@ -421,19 +421,17 @@ const ShopDetail = () => {
                       <p>$ {shop.noi?.toLocaleString()}</p>
                     </div>
                   )}
-                  {JSON.parse(shop.saleConditions).length > 0 && (
-                    <div className='flex'>
-                      <p className='w-32'>Sale Conditions:</p>
-                      <p>
-                        {JSON.parse(shop.saleConditions).map((condition: string, ind: number) => (
-                          <span key={condition}>
-                            {ind === 0 ? '' : ', '}
-                            {condition}
-                          </span>
-                        ))}
-                      </p>
-                    </div>
-                  )}
+                  <div className='flex'>
+                    <p className='w-32'>Sale Conditions:</p>
+                    <p>
+                      {JSON.parse(shop.saleConditions).map((condition: string, ind: number) => (
+                        <span key={condition}>
+                          {ind === 0 ? '' : ', '}
+                          {condition}
+                        </span>
+                      ))}
+                    </p>
+                  </div>
                   {shop.saleNotes && (
                     <div className='flex'>
                       <p className='w-32'>Sale Notes:</p>
@@ -510,72 +508,17 @@ const ShopDetail = () => {
                       <p>{shop.secureInformation}</p>
                     </div>
                   )}
-                  {JSON.parse(shop.highlights).length > 0 && (
-                    <div className='flex'>
-                      <p className='w-32'>Highlights:</p>
-                      <p>
-                        {JSON.parse(shop.highlights).map((highlight: string) => (
-                          <span key={highlight}>{highlight} </span>
-                        ))}
-                      </p>
-                    </div>
-                  )}
+                  <div className='flex'>
+                    <p className='w-32'>Highlights:</p>
+                    <p>
+                      {JSON.parse(shop.highlights).map((highlight: string) => (
+                        <span key={highlight}>{highlight} </span>
+                      ))}
+                    </p>
+                  </div>
                 </div>
               </div>
             </Paper>
-            {/* <div className='space-y-4'>
-              <div className='space-y-2'>
-                <h3 className='text-3xl font-bold'>{yacht.name}</h3>
-                <div className={classNames.propertyDiv}>
-                  <h5 className={classNames.propertyTitle}>Manufacturer</h5>
-                  <span className={classNames.propertyInfo}>{yacht.manufacturer}</span>
-                </div>
-                <div className={classNames.propertyDiv}>
-                  <h5 className={classNames.propertyTitle}>Engine Type</h5>
-                  <span className={classNames.propertyInfo}>{yacht.engineType}</span>
-                </div>
-                <div className={classNames.propertyDiv}>
-                  <h5 className={classNames.propertyTitle}>Year</h5>
-                  <span className={classNames.propertyInfo}>{yacht.year}</span>
-                </div>
-                <div className={classNames.propertyDiv}>
-                  <h5 className={classNames.propertyTitle}>Length(inch)</h5>
-                  <span className={classNames.propertyInfo}>{yacht.length_inch}</span>
-                </div>
-                <div className={classNames.propertyDiv}>
-                  <h5 className={classNames.propertyTitle}>Condition</h5>
-                  <span className={classNames.propertyInfo}>{yacht.condition}</span>
-                </div>
-                <div className={classNames.propertyDiv}>
-                  <h5 className={classNames.propertyTitle}>Location</h5>
-                  <span className={classNames.propertyInfo}>{yacht.location}</span>
-                </div>
-              </div>
-              <hr className='border-t border-gray-700' />
-              <div className='space-y-2'>
-                <h3 className='text-2xl font-bold'>Owner Information</h3>
-                <div className={classNames.propertyDiv}>
-                  <h5 className={classNames.propertyTitle}>Name</h5>
-                  <span className={classNames.propertyInfo}>
-                    {yacht.user.firstName} {yacht.user.lastName}
-                  </span>
-                </div>
-                <div className={classNames.propertyDiv}>
-                  <h5 className={classNames.propertyTitle}>Email</h5>
-                  <span className={classNames.propertyInfo}>{yacht.user.email}</span>
-                </div>
-                <div className={classNames.propertyDiv}>
-                  <h5 className={classNames.propertyTitle}>Phone</h5>
-                  <span className={classNames.propertyInfo}>{yacht.user.phone}</span>
-                </div>
-                <div className={classNames.propertyDiv}>
-                  <h5 className={classNames.propertyTitle}>Country</h5>
-                  <span className={classNames.propertyInfo}>{yacht.user.country}</span>
-                </div>
-              </div>
-              <hr className='border-t border-gray-700' />
-              
-            </div> */}
           </div>
         )}
       </div>
