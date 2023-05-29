@@ -424,7 +424,7 @@ const ShopDetail = () => {
                   <div className='flex'>
                     <p className='w-32'>Sale Conditions:</p>
                     <p>
-                      {JSON.parse(shop.saleConditions).map((condition: string, ind: number) => (
+                      {JSON.parse(shop.saleConditions)?.map((condition: string, ind: number) => (
                         <span key={condition}>
                           {ind === 0 ? '' : ', '}
                           {condition}
@@ -511,7 +511,7 @@ const ShopDetail = () => {
                   <div className='flex'>
                     <p className='w-32'>Highlights:</p>
                     <p>
-                      {JSON.parse(shop.highlights).map((highlight: string) => (
+                      {JSON.parse(shop.highlights)?.map((highlight: string) => (
                         <span key={highlight}>{highlight} </span>
                       ))}
                     </p>
