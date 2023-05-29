@@ -21,12 +21,12 @@ const ProfileMenu = () => {
   const dispatch = useAppDispatch()
   const user = useAppSelector((state: RootState) => state.user.user)
 
-  const handleLogout = () => {
+  const handleLogout = (): void => {
     dispatch(logout())
     navigate('/')
   }
 
-  const handleClickOutside = () => {
+  const handleClickOutside = (): void => {
     setOpen(false)
   }
 
@@ -39,7 +39,7 @@ const ProfileMenu = () => {
         alt=''
         width={40}
         height={40}
-        className='cursor-pointer rounded-full'
+        className='h-10 w-10 cursor-pointer rounded-full object-cover'
         onClick={() => setOpen((prev) => !prev)}
       />
       <ul

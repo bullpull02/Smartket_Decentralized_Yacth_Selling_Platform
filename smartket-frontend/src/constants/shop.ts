@@ -7,6 +7,16 @@ export const tabs = [
   'Highlights',
 ]
 
+export enum ShopStatus {
+  PENDING = 'pending',
+  ACCEPTED = 'accepted',
+  LISTED = 'listed',
+  DECLINED = 'declined',
+  OFFERED = 'offered',
+  SOLD = 'sold',
+  PURCHASED = 'purchased',
+}
+
 export enum SaleConditions {
   SALE_LEASEBACK = 'Sale Leaseback',
   BUILD_TO_SUIT = 'Build to Suit',

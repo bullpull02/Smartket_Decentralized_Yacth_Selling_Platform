@@ -95,7 +95,12 @@ const userSlice = createSlice({
         state.yachts = [...action.payload.data.user.yachts]
       }
     })
-    builder.addCase(createUser.fulfilled, (state, action) => {})
+    builder.addCase(createUser.fulfilled, (state, action) => {
+      if (action.payload.success) {
+        state.user = { ...action.payload.data.user }
+        state.isLoggedIn = true
+      }
+    })
     builder.addCase(createUser.rejected, (state, action) => {})
     builder.addCase(updateUser.fulfilled, (state, action) => {})
     builder.addCase(updateUser.rejected, (state, action) => {})

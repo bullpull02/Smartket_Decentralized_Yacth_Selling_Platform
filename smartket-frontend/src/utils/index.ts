@@ -1,5 +1,6 @@
 import * as React from 'react'
 import axios from 'axios'
+import states from 'constants/states'
 
 export function lazyImport<
   T extends React.ComponentType<any>,
@@ -39,5 +40,11 @@ export const uploadToIPFS = async (type: string, data: any) => {
     }
   } catch (err) {
     throw err
+  }
+}
+
+export const getStatusCode = (name: string): string | undefined => {
+  for (let state of states) {
+    if (state.name === name) return state.code
   }
 }
