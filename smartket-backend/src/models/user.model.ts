@@ -1,5 +1,6 @@
 import { Column, DataType, HasMany, Model, Table } from 'sequelize-typescript'
 import Yacht from './yacht.model'
+import Shop from './shop.model'
 
 export enum UserRoles {
 	ADMIN = 'admin',
@@ -106,6 +107,9 @@ class User extends Model<User> {
 
 	@HasMany(() => Yacht)
 	yachts: Yacht[]
+
+	@HasMany(() => Shop)
+	shops: Yacht[]
 
 	static findByEmail(email: string) {
 		return User.findOne({ where: { email } })

@@ -13,6 +13,10 @@ class UserRouter {
 
 	initializeRoutes() {
 		this.router.route('/login').post(signMiddleware, this.userController.login)
+		this.router
+			.route('/get-my-assets')
+			.get(signMiddleware, this.userController.getMyAssets)
+		this.router.route('/marketplace').get(this.userController.marketplace)
 		this.router.route('/:id').get(this.userController.findById)
 		this.router
 			.route('/')
