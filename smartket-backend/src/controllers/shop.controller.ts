@@ -211,7 +211,30 @@ export default class ShopController {
 		}
 	}
 
-	purchase = async (req: Request, res: Response): Promise<any> => {}
+	purchase = async (req: Request, res: Response): Promise<any> => {
+		try {
+			const { id } = req.params
+			const { role, documents } = req.body
+
+			if (role !== UserRoles.ADMIN) {
+				return errorHandler(403, "You don't have permission to perform this action", res)
+			}
+
+			await Shop.update(
+				{
+					status: ShopStatus.ACCEPTED,
+					documents: JSON.stringify(documents),
+				},
+				{ where: { id, status: ShopStatus.SOLD } }
+			)
+
+			const shops = await Shop.findAll({ include: [{ model: User }] })
+
+			return res.json({ status: 200, success: true, data: { shops } })
+		} catch (err) {
+			errorHandler(500, err.message, res)
+		}
+	}
 
 	delete = async (req: Request, res: Response): Promise<any> => {
 		try {

@@ -26,3 +26,12 @@ export const apiDeclineShop = async (id: number): Promise<any> => {
     throw err
   }
 }
+
+export const apiPurchaseShop = async (id: number, documents: string[]): Promise<any> => {
+  try {
+    const { data } = await axios.put(`/shop/purchase/${id}`, { documents })
+    return data
+  } catch (err) {
+    throw err
+  }
+}

@@ -15,16 +15,19 @@ import LinkedinIcon from '@mui/icons-material/LinkedIn'
 
 import MainLayout from 'layouts/MainLayout'
 import Loading from 'components/Loading'
+import DocumentUploadModal from 'components/Modal/DocumentUpload'
 
 import { useAppDispatch } from 'app/hooks'
 import { setLoadingModalOpen } from 'slices/modal'
-import { shortenAddress } from 'utils'
-import { apiGetAllShops, apiApproveShop, apiDeclineShop } from 'utils/admin/shop'
+import { shortenAddress, uploadToIPFS } from 'utils'
+import { apiGetAllShops, apiApproveShop, apiDeclineShop, apiPurchaseShop } from 'utils/admin/shop'
 import { ShopStatus } from 'constants/shop'
 
 const ShopManagement = () => {
   const [loading, setLoading] = useState<boolean>(true)
   const [shops, setShops] = useState<any[]>([])
+  const [purchaseId, setPurchaseId] = useState<number>(0)
+  const [isOpen, setIsOpen] = useState<boolean>(false)
   const dispatch = useAppDispatch()
 
   useEffect(() => {
@@ -87,8 +90,47 @@ const ShopManagement = () => {
     }
   }
 
+  const handlePurchase = async (id: number): Promise<void> => {
+    setPurchaseId(id)
+    setIsOpen(true)
+  }
+
+  const handleUploadAndPurchase = async (documents: File[]): Promise<void> => {
+    if (documents.length === 0) {
+      toast.error('You must upload at least one document')
+      return
+    }
+    try {
+      dispatch(setLoadingModalOpen(true))
+
+      const _documents = []
+      for (let document of documents) {
+        _documents.push(await uploadToIPFS('file', document))
+      }
+
+      const data = await apiPurchaseShop(purchaseId, _documents)
+
+      if (data.success) {
+        setShops(data.data.shops)
+        toast.success(`Successfully purchased the shop ${purchaseId}`)
+      } else {
+        toast.error(data.message)
+      }
+    } catch (err) {
+      toast.error('Network Error')
+    } finally {
+      dispatch(setLoadingModalOpen(false))
+      setIsOpen(false)
+    }
+  }
+
   return (
     <MainLayout title='ADMIN - SHOP MANAGEMENT'>
+      <DocumentUploadModal
+        isOpen={isOpen}
+        closeModal={() => setIsOpen(false)}
+        onSubmit={handleUploadAndPurchase}
+      />
       <div className='px-5 py-8'>
         {loading ? (
           <Loading />
@@ -207,8 +249,13 @@ const ShopManagement = () => {
                               </Button>
                             </>
                           )}
+                          {shop.status === ShopStatus.SOLD && (
+                            <Button variant='contained' onClick={() => handlePurchase(shop.id)}>
+                              Purchase
+                            </Button>
+                          )}
                           <Link to={`/details/assets/business/shop/${shop.id}`} target='_blank'>
-                            <Button variant='contained' color='info'>
+                            <Button variant='contained' color='info' fullWidth>
                               View Details
                             </Button>
                           </Link>

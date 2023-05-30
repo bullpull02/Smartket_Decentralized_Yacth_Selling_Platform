@@ -18,7 +18,6 @@ const modalSlice = createSlice({
     setWalletConnectModalOpen(state, action: PayloadAction<boolean>) {
       state.walletConnectModalOpen = action.payload
     },
-
     setLoadingModalOpen(state, action: PayloadAction<boolean>) {
       state.loadingModalOpen = action.payload
     },
