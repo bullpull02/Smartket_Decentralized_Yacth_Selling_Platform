@@ -24,3 +24,6 @@ input[type='number']::-webkit-outer-spin-button {
 .lazy-load-image-loaded.blur {
   filter: none;
 }
+.lazy-load-image-loaded {
+  @apply h-full w-full;
+}

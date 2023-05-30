@@ -18,7 +18,7 @@ const Shop: React.FC<ShopProps> = ({ shop, onClick = () => null }) => {
         src={`https://ipfs.io/ipfs/${JSON.parse(shop.photos)[0]}`}
         effect='blur'
         delayMethod='debounce'
-        className='trans h-full w-full object-cover !duration-700 group-hover:scale-125'
+        className='trans aspect-square w-full object-cover !duration-700 group-hover:scale-125'
       />
       <h4
         className={cx(
