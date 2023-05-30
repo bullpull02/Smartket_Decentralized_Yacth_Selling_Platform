@@ -390,7 +390,7 @@ const ShopDetail = () => {
               </div>
               <div>
                 <h4 className='text-xl font-semibold'>Shop Information</h4>
-                <div className='mt-4 grid max-w-xl gap-1 text-sm'>
+                <div className='mt-4 grid max-w-3xl gap-1 text-sm'>
                   <div className='flex'>
                     <p className='w-32'>Location:</p>
                     <p>
@@ -436,7 +436,7 @@ const ShopDetail = () => {
                   </div>
                   {shop.saleNotes && (
                     <div className='flex'>
-                      <p className='w-32'>Sale Notes:</p>
+                      <p className='w-32 shrink-0'>Sale Notes:</p>
                       <p>{shop.saleNotes}</p>
                     </div>
                   )}
