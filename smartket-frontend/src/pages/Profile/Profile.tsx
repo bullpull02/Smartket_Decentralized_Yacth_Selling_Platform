@@ -23,7 +23,7 @@ const Profile = () => {
         <div className='container py-8'>
           <div className='flex items-center justify-center gap-8'>
             <img
-              src={`https://gateway.pinata.cloud/ipfs/${user.avatar}`}
+              src={`https://ipfs.io/ipfs/${user.avatar}`}
               alt=''
               className='h-80 w-80 rounded object-cover'
             />
