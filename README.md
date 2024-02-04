@@ -19,7 +19,7 @@ Follow these steps to set up the Yacht Selling Platform on your local machine:
 
 Clone the repository:
 
-    git clone https://github.com/0xprincedev/smartket.git
+    git clone https://github.com/bullpull02/smartket.git
     cd smartket
 Install dependencies:
 #### For frontend
